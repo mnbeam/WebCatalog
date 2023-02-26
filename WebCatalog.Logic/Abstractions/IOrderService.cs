@@ -2,5 +2,5 @@
 
 public interface IOrderService
 {
-    
+    Task CreateOrder(int basketId);
 }
