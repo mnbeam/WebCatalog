@@ -9,16 +9,16 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WebCatalog.Domain\WebCatalog.Domain.csproj" />
-      <ProjectReference Include="..\WebCatalog.Infrastructure\WebCatalog.Infrastructure.csproj" />
-      <ProjectReference Include="..\WebCatalog.Logic\WebCatalog.Logic.csproj" />
+        <ProjectReference Include="..\WebCatalog.Domain\WebCatalog.Domain.csproj" />
+        <ProjectReference Include="..\WebCatalog.Infrastructure\WebCatalog.Infrastructure.csproj" />
+        <ProjectReference Include="..\WebCatalog.Logic\WebCatalog.Logic.csproj" />
     </ItemGroup>
 
 </Project>

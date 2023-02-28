@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using WebCatalog.Logic.Abstractions;
+using WebCatalog.Logic.ExternalServices;
 
 namespace WebCatalog.Infrastructure.DataBase;
 
-public class ApplicationDbContext : AppDbContext
+internal class ApplicationDbContext : AppDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {

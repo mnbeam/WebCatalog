@@ -1,28 +1,74 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using WebCatalog.Api.Middlewares;
+using WebCatalog.Api.UserAccessor;
+using WebCatalog.Domain.Entities;
 using WebCatalog.Infrastructure;
-using WebCatalog.Infrastructure.DataBase;
+using WebCatalog.Logic;
+using WebCatalog.Logic.Configurations;
+using WebCatalog.Logic.ExternalServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IUserAccessor, UserAccessor>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddInfrastructure(configuration);
+builder.Services.AddIdentity<AppUser, IdentityRole<int>>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
+
+builder.Services.AddInfrastructure(configuration);
+builder.Services.AddLogic(configuration);
+
+var authOptions = configuration
+    .GetSection(nameof(AuthOptions))
+    .Get<AuthOptions>();
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = authOptions.Issuer,
+
+            ValidateAudience = true,
+            ValidAudience = authOptions.Audience,
+
+            ValidateLifetime = true,
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = authOptions.SymmetricSecurityKey
+        };
+    });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
 

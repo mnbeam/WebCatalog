@@ -1,13 +1,10 @@
-﻿using WebCatalog.Domain.Entities.Base;
-using WebCatalog.Domain.Entities.CustomerEntities;
-
-namespace WebCatalog.Domain.Entities.OrderEntities;
+﻿namespace WebCatalog.Domain.Entities.OrderEntities;
 
 public class Order : BaseEntity
 {
-    public int CustomerId { get; set; }
+    public int AppUserId { get; set; }
 
-    public Customer? Customer { get; set; }
+    public AppUser? AppUser { get; set; }
 
     public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
 

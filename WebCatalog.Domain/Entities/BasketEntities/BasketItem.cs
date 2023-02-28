@@ -1,5 +1,4 @@
-﻿using WebCatalog.Domain.Entities.Base;
-using WebCatalog.Domain.Entities.ProductEntities;
+﻿using WebCatalog.Domain.Entities.ProductEntities;
 
 namespace WebCatalog.Domain.Entities.BasketEntities;
 

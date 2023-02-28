@@ -1,6 +1,4 @@
-﻿using WebCatalog.Domain.Entities.Base;
-
-namespace WebCatalog.Domain.Entities.ProductEntities;
+﻿namespace WebCatalog.Domain.Entities.ProductEntities;
 
 public class Category : BaseEntity
 {

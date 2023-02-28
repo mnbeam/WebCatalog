@@ -1,6 +1,4 @@
-﻿using WebCatalog.Domain.Entities.Base;
-
-namespace WebCatalog.Domain.Entities.OrderEntities;
+﻿namespace WebCatalog.Domain.Entities.OrderEntities;
 
 public class OrderItem : BaseEntity
 {

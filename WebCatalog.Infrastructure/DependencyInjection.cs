@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebCatalog.Infrastructure.DataBase;
-using WebCatalog.Logic.Abstractions;
+using WebCatalog.Logic.ExternalServices;
 
 namespace WebCatalog.Infrastructure;
 

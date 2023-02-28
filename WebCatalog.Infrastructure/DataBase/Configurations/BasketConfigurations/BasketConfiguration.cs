@@ -8,7 +8,11 @@ public class BasketConfiguration : IEntityTypeConfiguration<Basket>
 {
     public void Configure(EntityTypeBuilder<Basket> builder)
     {
-        builder.Property(b => b.CustomerId)
+        builder.Property(b => b.AppUserId)
             .IsRequired();
+
+        builder.HasMany(b => b.BasketItems)
+            .WithOne(bi => bi.Basket)
+            .HasForeignKey(bi => bi.BasketId);
     }
 }

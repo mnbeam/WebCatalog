@@ -8,7 +8,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.Property(o => o.CustomerId)
+        builder.Property(o => o.AppUserId)
             .IsRequired();
     }
 }
