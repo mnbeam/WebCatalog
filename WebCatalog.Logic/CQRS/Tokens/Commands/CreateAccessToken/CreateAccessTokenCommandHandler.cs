@@ -16,7 +16,8 @@ public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessToken
         _authOptions = authOptions.Value;
     }
 
-    public async Task<string> Handle(CreateAccessTokenCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateAccessTokenCommand request,
+        CancellationToken cancellationToken)
     {
         var claims = new List<Claim>
         {
@@ -26,12 +27,12 @@ public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessToken
         };
 
         var token = new JwtSecurityToken(
-            issuer: _authOptions.Issuer,
-            audience: _authOptions.Audience,
-            claims: claims,
-            notBefore: DateTime.Now,
-            expires: DateTime.Now.AddMinutes(_authOptions.ExpireTimeTokenMinutes),
-            signingCredentials: new SigningCredentials(_authOptions.SymmetricSecurityKey,
+            _authOptions.Issuer,
+            _authOptions.Audience,
+            claims,
+            DateTime.Now,
+            DateTime.Now.AddMinutes(_authOptions.ExpireTimeTokenMinutes),
+            new SigningCredentials(_authOptions.SymmetricSecurityKey,
                 SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(token);

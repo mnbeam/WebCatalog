@@ -13,10 +13,10 @@ namespace WebCatalog.Logic.CQRS.Accounts.Commands.Login;
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
 {
-    private readonly AppDbContext _dbContext;
-    private readonly UserManager<AppUser> _userManager;
-    private readonly IMediator _mediator;
     private readonly AuthOptions _authOptions;
+    private readonly AppDbContext _dbContext;
+    private readonly IMediator _mediator;
+    private readonly UserManager<AppUser> _userManager;
 
     public LoginCommandHandler(AppDbContext dbContext,
         UserManager<AppUser> userManager,
@@ -58,7 +58,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
 
         if (dividerIndex < 0)
         {
-            throw new Exception("InvalidRefreshToken"); 
+            throw new Exception("InvalidRefreshToken");
         }
 
         var id = refreshToken[..dividerIndex];
@@ -72,7 +72,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
 
         return user;
     }
-    
+
     private async Task CheckRefreshTokenAsync(AppUser user, string refreshToken)
     {
         var token = await _dbContext.Tokens.FirstOrDefaultAsync(t =>
@@ -89,9 +89,10 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
     private async Task<LoginVm> LoginByPasswordAsync(string userName, string password)
     {
         var user = await _userManager.FindByNameAsync(userName);
-        
+
         if (user == null || !await _userManager.CheckPasswordAsync(user, password))
-        { //todo InvalidUserNameOrPasswordException
+        {
+            //todo InvalidUserNameOrPasswordException
             throw new NotFoundException(nameof(AppUser), userName);
         }
 

@@ -15,6 +15,6 @@ public class GetCategoryVm : IMapWith<Category>
             .ForMember(categoryVm => categoryVm.Name,
                 opt => opt.MapFrom(category => category.Name))
             .ForMember(categoryVm => categoryVm.Description,
-            opt => opt.MapFrom(category => category.Description));
+                opt => opt.MapFrom(category => category.Description));
     }
 }

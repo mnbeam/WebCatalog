@@ -14,13 +14,13 @@ public static class DependencyInjection
     {
         services.AddAppSettingsHelper(configuration);
         services.AddMediatR(c => c.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-        
+
         services.AddAutoMapper(config =>
         {
             config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
             config.AddProfile(new AssemblyMappingProfile(typeof(AppDbContext).Assembly));
         });
-        
+
         return services;
     }
 }

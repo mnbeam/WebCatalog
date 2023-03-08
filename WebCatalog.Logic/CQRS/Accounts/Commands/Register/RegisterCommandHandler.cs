@@ -30,7 +30,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
             throw new Exception("Customer creation error");
         }
 
-        var roleResult = await _userManager.AddToRoleAsync(user, Role.Customer.GetEnumDescription());
+        var roleResult =
+            await _userManager.AddToRoleAsync(user, Role.Customer.GetEnumDescription());
 
         if (!roleResult.Succeeded)
         {

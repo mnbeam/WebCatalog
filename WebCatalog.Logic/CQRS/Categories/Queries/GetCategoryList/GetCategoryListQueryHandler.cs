@@ -18,7 +18,8 @@ public class GetCategoryListQueryHandler : IRequestHandler<GetCategoryListQuery,
         _mapper = mapper;
     }
 
-    public async Task<CategoryListVm> Handle(GetCategoryListQuery request, CancellationToken cancellationToken)
+    public async Task<CategoryListVm> Handle(GetCategoryListQuery request,
+        CancellationToken cancellationToken)
     {
         var categories = await _dbContext.Categories
             .ProjectTo<GetCategoryVm>(_mapper.ConfigurationProvider)

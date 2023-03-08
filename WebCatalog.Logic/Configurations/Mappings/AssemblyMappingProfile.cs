@@ -5,7 +5,10 @@ namespace WebCatalog.Logic.Configurations.Mappings;
 
 public class AssemblyMappingProfile : Profile
 {
-    public AssemblyMappingProfile(Assembly assembly) => ApplyMappingFromAssembly(assembly);
+    public AssemblyMappingProfile(Assembly assembly)
+    {
+        ApplyMappingFromAssembly(assembly);
+    }
 
     private void ApplyMappingFromAssembly(Assembly assembly)
     {
@@ -19,7 +22,7 @@ public class AssemblyMappingProfile : Profile
         {
             var instance = Activator.CreateInstance(type);
             var methodInfo = type.GetMethod("Mapping");
-            methodInfo?.Invoke(instance, new object[] { this });
+            methodInfo?.Invoke(instance, new object[] {this});
         }
     }
 }

@@ -29,7 +29,7 @@ public record AuthOptions
     }
 
     public int UserNameMinLength { get; set; }
-    
+
     public int UserNameMaxLength { get; set; }
 
     public int EmailMaxLength { get; set; }

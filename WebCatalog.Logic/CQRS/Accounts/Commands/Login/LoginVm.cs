@@ -1,6 +1,4 @@
-﻿using WebCatalog.Logic.Configurations.Mappings;
-
-namespace WebCatalog.Logic.CQRS.Accounts.Commands.Login;
+﻿namespace WebCatalog.Logic.CQRS.Accounts.Commands.Login;
 
 public class LoginVm
 {

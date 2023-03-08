@@ -18,10 +18,11 @@ public class GetCategoryQueryHandler : IRequestHandler<GetCategoryQuery, GetCate
         _dbContext = dbContext;
     }
 
-    public async Task<GetCategoryVm> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<GetCategoryVm> Handle(GetCategoryQuery request,
+        CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories
-                .FirstOrDefaultAsync(c => c.Id == request.CategoryId,
+            .FirstOrDefaultAsync(c => c.Id == request.CategoryId,
                 cancellationToken);
 
         if (category == null)

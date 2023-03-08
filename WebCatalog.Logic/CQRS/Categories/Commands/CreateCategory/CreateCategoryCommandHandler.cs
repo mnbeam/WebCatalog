@@ -13,7 +13,8 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
         _dbContext = dbContext;
     }
 
-    public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateCategoryCommand request,
+        CancellationToken cancellationToken)
     {
         var category = new Category
         {
