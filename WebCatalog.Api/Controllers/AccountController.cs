@@ -1,24 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebCatalog.Logic.Services.Accounts;
-using WebCatalog.Logic.Services.Accounts.Dtos;
+using WebCatalog.Api.Models;
+using WebCatalog.Logic.CQRS.Accounts.Commands.Login;
+using WebCatalog.Logic.CQRS.Accounts.Commands.Register;
 
 namespace WebCatalog.Api.Controllers;
 
-[Route("[controller]/[action]")]
-[ApiController]
-public class AccountController : ControllerBase
+public class AccountController : BaseController
 {
-    private readonly IAccountService _accountService;
-
-    public AccountController(IAccountService accountService)
-    {
-        _accountService = accountService;
-    }
-
     [HttpPost]
     public async Task<IActionResult> Register(RegisterDto registerDto)
     {
-        await _accountService.Register(registerDto);
+        var registerCommand = new RegisterCommand
+        {
+            UserName = registerDto.UserName,
+            Password = registerDto.Password,
+            Email = registerDto.Email
+        };
+        
+        await Mediator.Send(registerCommand);
 
         return Ok();
     }
@@ -26,8 +25,32 @@ public class AccountController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
-        var result = await _accountService.Login(loginDto);
+        var registerCommand = new LoginCommand
+        {
+            HaveRefreshToken = loginDto.HaveRefreshToken,
+            RefreshToken = loginDto.RefreshToken,
+            UserName = loginDto.UserName,
+            Password = loginDto.Password
+        };
+        
+        var registerVm = await Mediator.Send(registerCommand);
 
-        return Ok(result);
+        return Ok(registerVm);
     }
+    //
+    // [HttpPost]
+    // public async Task<IActionResult> AddRole(int userId, Role role)
+    // { 
+    //     await _accountService.AddRole(userId, role);
+    //
+    //     return Ok();
+    // }
+    //
+    // [HttpPost]
+    // public async Task<IActionResult> RemoveRole(int userId, Role role)
+    // { 
+    //     await _accountService.RemoveRole(userId, role);
+    //
+    //     return Ok();
+    // }
 }

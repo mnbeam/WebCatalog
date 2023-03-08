@@ -1,14 +1,18 @@
 ﻿namespace WebCatalog.Domain.Entities.ProductEntities;
 
-public class Review : BaseEntity
+public class Review : BaseEntity, IAuditable
 {
-    public string? Content { get; set; }
-
-    public string UserName { get; set; } = null!;
-
-    public int Rating { get; set; }
+    public int UserId { get; set; }
+    public AppUser? AppUser { get; set; }
 
     public int ProductId { get; set; }
-
     public Product? Product { get; set; }
+    
+    public string? Content { get; set; }
+    
+    public int Rating { get; set; }
+    
+    public DateTime CreatedTime { get; set; } = DateTime.Now;
+    
+    public DateTime? EditedTime { get; set; }
 }

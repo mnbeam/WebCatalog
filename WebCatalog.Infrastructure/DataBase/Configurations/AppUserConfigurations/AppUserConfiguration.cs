@@ -10,16 +10,20 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 {
     public void Configure(EntityTypeBuilder<AppUser> builder)
     {
-        builder.HasOne(c => c.Basket)
+        builder.HasOne(u => u.Basket)
             .WithOne(b => b.AppUser)
             .HasForeignKey<Basket>(b => b.AppUserId);
 
-        builder.HasOne(c => c.Order)
+        builder.HasOne(u => u.Order)
             .WithOne(o => o.AppUser)
             .HasForeignKey<Order>(o => o.AppUserId);
 
-        builder.HasOne(c => c.Token)
+        builder.HasOne(u => u.Token)
             .WithOne(t => t.AppUser)
             .HasForeignKey<Token>(t => t.UserId);
+
+        builder.HasMany(u => u.Reviews)
+            .WithOne(r => r.AppUser)
+            .HasForeignKey(r => r.UserId);
     }
 }

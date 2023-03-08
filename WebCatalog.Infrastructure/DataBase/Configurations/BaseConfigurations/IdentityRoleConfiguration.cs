@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WebCatalog.Domain.Consts;
+using WebCatalog.Domain.Enums;
+using WebCatalog.Logic.Extensions;
 
 namespace WebCatalog.Infrastructure.DataBase.Configurations.BaseConfigurations;
 
@@ -12,18 +13,18 @@ public class IdentityRoleConfiguration : IEntityTypeConfiguration<IdentityRole<i
         builder.HasData(new IdentityRole<int>
         {
             Id = 1,
-            Name = Roles.Customer,
-            NormalizedName = Roles.Customer.ToUpper()
+            Name = Role.Admin.GetEnumDescription(),
+            NormalizedName = Role.Admin.GetEnumDescription().ToUpper()
         }, new IdentityRole<int>
         {
             Id = 2,
-            Name = Roles.Seller,
-            NormalizedName = Roles.Seller.ToUpper()
+            Name = Role.Customer.GetEnumDescription(),
+            NormalizedName = Role.Customer.GetEnumDescription().ToUpper()
         }, new IdentityRole<int>
         {
             Id = 3,
-            Name = Roles.Admin,
-            NormalizedName = Roles.Admin.ToUpper()
+            Name = Role.Seller.GetEnumDescription(),
+            NormalizedName = Role.Seller.GetEnumDescription().ToUpper()
         });
     }
 }

@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebCatalog.Logic.Configurations.Mappings;
 using WebCatalog.Logic.Extensions;
-using WebCatalog.Logic.Services.Accounts;
-using WebCatalog.Logic.Services.Tokens;
-using WebCatalog.Logic.Validators;
+using WebCatalog.Logic.ExternalServices;
 
 namespace WebCatalog.Logic;
 
@@ -13,11 +13,14 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddAppSettingsHelper(configuration);
-
-        services.AddScoped<IAccountService, AccountService>();
-        services.AddScoped<ITokenService, TokenService>();
-        services.AddSingleton<AuthValidator>();
-
+        services.AddMediatR(c => c.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        
+        services.AddAutoMapper(config =>
+        {
+            config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
+            config.AddProfile(new AssemblyMappingProfile(typeof(AppDbContext).Assembly));
+        });
+        
         return services;
     }
 }
