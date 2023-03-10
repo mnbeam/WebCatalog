@@ -1,7 +1,5 @@
 using System.Net;
 using System.Text.Json;
-using FluentValidation;
-using Microsoft.IdentityModel.Tokens;
 using WebCatalog.Logic.Common.Exceptions;
 
 namespace WebCatalog.Api.Middlewares;
@@ -31,7 +29,7 @@ public class CustomExceptionHandlerMiddleware
         var result = string.Empty;
         switch(exception)
         {
-            case ValidationException validationException:
+            case WebCatalogValidationException validationException:
                 code = HttpStatusCode.BadRequest;
                 result = JsonSerializer.Serialize(validationException.Errors);
                 break;

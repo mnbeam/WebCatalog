@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using WebCatalog.Logic.Common.Exceptions;
 
 namespace WebCatalog.Logic.Common.Behaviors;
 
@@ -34,7 +35,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         if (failures.Any())
         {
-            throw new ValidationException(failures);
+            throw new WebCatalogValidationException(failures);
         }
 
         return await next();
