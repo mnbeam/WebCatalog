@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WebCatalog.Domain.Enums;
-using WebCatalog.Logic.Extensions;
+using WebCatalog.Logic.Common.Extensions;
 
 namespace WebCatalog.Infrastructure.DataBase.Configurations.BaseConfigurations;
 

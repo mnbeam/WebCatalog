@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using WebCatalog.Logic.ExternalServices;
+using WebCatalog.Logic.Common.ExternalServices;
 
 namespace WebCatalog.Infrastructure.DataBase;
 

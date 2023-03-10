@@ -6,8 +6,8 @@ using WebCatalog.Api.UserAccessor;
 using WebCatalog.Domain.Entities;
 using WebCatalog.Infrastructure;
 using WebCatalog.Logic;
-using WebCatalog.Logic.Configurations;
-using WebCatalog.Logic.ExternalServices;
+using WebCatalog.Logic.Common.Configurations;
+using WebCatalog.Logic.Common.ExternalServices;
 
 var builder = WebApplication.CreateBuilder(args);
 

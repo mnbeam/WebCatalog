@@ -1,56 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebCatalog.Api.Models;
-using WebCatalog.Logic.CQRS.Accounts.Commands.Login;
-using WebCatalog.Logic.CQRS.Accounts.Commands.Register;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebCatalog.Logic.WebCatalog.Accounts.Commands.AddRole;
+using WebCatalog.Logic.WebCatalog.Accounts.Commands.Login;
+using WebCatalog.Logic.WebCatalog.Accounts.Commands.Register;
+using WebCatalog.Logic.WebCatalog.Accounts.Commands.RemoveRole;
+using WebCatalog.Logic.WebCatalog.Accounts.Queries.GetAppUserList;
 
 namespace WebCatalog.Api.Controllers;
 
 public class AccountController : BaseController
 {
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterDto registerDto)
+    public async Task<IActionResult> Register(RegisterCommand registerCommand)
     {
-        var registerCommand = new RegisterCommand
-        {
-            UserName = registerDto.UserName,
-            Password = registerDto.Password,
-            Email = registerDto.Email
-        };
-        
         await Mediator.Send(registerCommand);
 
         return Ok();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginDto loginDto)
+    public async Task<IActionResult> Login(LoginCommand loginCommand)
     {
-        var registerCommand = new LoginCommand
-        {
-            HaveRefreshToken = loginDto.HaveRefreshToken,
-            RefreshToken = loginDto.RefreshToken,
-            UserName = loginDto.UserName,
-            Password = loginDto.Password
-        };
-        
-        var registerVm = await Mediator.Send(registerCommand);
+        var loginVm = await Mediator.Send(loginCommand);
 
-        return Ok(registerVm);
+        return Ok(loginVm);
     }
-    //
-    // [HttpPost]
-    // public async Task<IActionResult> AddRole(int userId, Role role)
-    // { 
-    //     await _accountService.AddRole(userId, role);
-    //
-    //     return Ok();
-    // }
-    //
-    // [HttpPost]
-    // public async Task<IActionResult> RemoveRole(int userId, Role role)
-    // { 
-    //     await _accountService.RemoveRole(userId, role);
-    //
-    //     return Ok();
-    // }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> AddRole(AddRoleCommand addRoleCommand)
+    {
+        await Mediator.Send(addRoleCommand);
+
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> RemoveRole(RemoveRoleCommand removeRoleCommand)
+    {
+        await Mediator.Send(removeRoleCommand);
+
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> GetUsers()
+    {
+        var userListVm = await Mediator.Send(new GetAppUserListQuery());
+
+        return Ok(userListVm);
+    }
 }

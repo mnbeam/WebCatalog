@@ -1,5 +1,8 @@
 using System.Net;
+using System.Text.Json;
+using FluentValidation;
 using Microsoft.IdentityModel.Tokens;
+using WebCatalog.Logic.Common.Exceptions;
 
 namespace WebCatalog.Api.Middlewares;
 
@@ -7,10 +10,8 @@ public class CustomExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public CustomExceptionHandlerMiddleware(RequestDelegate next)
-    {
+    public CustomExceptionHandlerMiddleware(RequestDelegate next) =>
         _next = next;
-    }
 
     public async Task Invoke(HttpContext context)
     {
@@ -18,7 +19,7 @@ public class CustomExceptionHandlerMiddleware
         {
             await _next(context);
         }
-        catch (Exception exception)
+        catch(Exception exception)
         {
             await HandleExceptionAsync(context, exception);
         }
@@ -27,27 +28,27 @@ public class CustomExceptionHandlerMiddleware
     private Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         var code = HttpStatusCode.InternalServerError;
-
-        string result = string.Empty;
-
-        switch (exception)
+        var result = string.Empty;
+        switch(exception)
         {
-            case ArgumentException argumentException:
+            case ValidationException validationException:
                 code = HttpStatusCode.BadRequest;
-                result = argumentException.Message;
+                result = JsonSerializer.Serialize(validationException.Errors);
+                break;
+            case NotFoundException notFoundException:
+                code = HttpStatusCode.NotFound;
+                result = notFoundException.Message;
                 break;
         }
-
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int) code;
+        context.Response.StatusCode = (int)code;
 
-        if (result.IsNullOrEmpty())
+        if (result == string.Empty)
         {
-            return Task.CompletedTask;
+            result = JsonSerializer.Serialize(new { errpr = exception.Message });
         }
 
         return context.Response.WriteAsync(result);
-        // return context.Response.WriteAsync(JsonConvert.SerializeObject(errors));
     }
 }
 

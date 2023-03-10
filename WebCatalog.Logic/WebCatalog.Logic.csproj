@@ -7,25 +7,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="CQRS\Baskets\Commands"/>
-        <Folder Include="CQRS\Baskets\Queries"/>
-        <Folder Include="CQRS\Orders\Commands"/>
-        <Folder Include="CQRS\Orders\Queries"/>
-        <Folder Include="CQRS\Products\Commands"/>
-        <Folder Include="CQRS\Products\Queries"/>
-        <Folder Include="CQRS\Reviews\Queries\GetReviewListByUserId"/>
+        <Folder Include="Common\Validators" />
+        <Folder Include="WebCatalog\Baskets\Commands" />
+        <Folder Include="WebCatalog\Baskets\Queries" />
+        <Folder Include="WebCatalog\Orders\Commands" />
+        <Folder Include="WebCatalog\Orders\Queries" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WebCatalog.Domain\WebCatalog.Domain.csproj"/>
+        <ProjectReference Include="..\WebCatalog.Domain\WebCatalog.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="12.0.1"/>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0"/>
-        <PackageReference Include="MediatR" Version="12.0.1"/>
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3"/>
+        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+        <PackageReference Include="FluentValidation" Version="11.5.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
+        <PackageReference Include="MediatR" Version="12.0.1" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
     </ItemGroup>
 
 </Project>

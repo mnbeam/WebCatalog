@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using WebCatalog.Logic.Configurations;
+using WebCatalog.Logic.Common.Configurations;
 
 namespace WebCatalog.Api.UserAccessor;
 
@@ -11,7 +11,7 @@ public class UserAccessor : IUserAccessor
     {
         _contextAccessor = contextAccessor ?? throw new ArgumentException();
     }
-    
+
     public ClaimsPrincipal User => _contextAccessor.HttpContext.User;
 
     public int UserId => int.Parse(User.Identity.Name);

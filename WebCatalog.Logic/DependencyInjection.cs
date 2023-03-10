@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
+using AutoMapper;
+using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebCatalog.Logic.Configurations.Mappings;
-using WebCatalog.Logic.Extensions;
-using WebCatalog.Logic.ExternalServices;
+using WebCatalog.Logic.Common.Behaviors;
+using WebCatalog.Logic.Common.Extensions;
+using WebCatalog.Logic.Common.Mappings;
 
 namespace WebCatalog.Logic;
 
@@ -13,13 +16,18 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddAppSettingsHelper(configuration);
-        services.AddMediatR(c => c.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
-        services.AddAutoMapper(config =>
-        {
-            config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
-            config.AddProfile(new AssemblyMappingProfile(typeof(AppDbContext).Assembly));
-        });
+        services.AddMediatR(c => c.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        
+        services
+            .AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() });
+        services.AddTransient(typeof(IPipelineBehavior<,>),
+            typeof(ValidationBehavior<,>));
+
+        var mapperConfiguration =
+            new MapperConfiguration(mc => mc.AddProfile(new AssemblyMappingProfile()));
+        mapperConfiguration.AssertConfigurationIsValid();
+        services.AddSingleton(mapperConfiguration.CreateMapper());
 
         return services;
     }
