@@ -8,8 +8,13 @@ public class BasketItemConfiguration : IEntityTypeConfiguration<BasketItem>
 {
     public void Configure(EntityTypeBuilder<BasketItem> builder)
     {
-        builder.Property(bi => bi.UnitPrice)
-            .IsRequired()
-            .HasColumnType("decimal(18,2)");
+        builder.Property(bi => bi.BasketId)
+            .IsRequired();
+
+        builder.Property(bi => bi.ProductId)
+            .IsRequired();
+
+        builder.Property(bi => bi.Quantity)
+            .IsRequired();
     }
 }
