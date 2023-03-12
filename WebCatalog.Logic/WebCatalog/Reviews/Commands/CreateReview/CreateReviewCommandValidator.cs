@@ -7,7 +7,7 @@ public class CreateReviewCommandValidator : AbstractValidator<CreateReviewComman
 {
     public CreateReviewCommandValidator()
     {
-        RuleFor(v => v.ProductId).ValidateId();
+        RuleFor(v => v.ProductId).MustBePositive();
 
         RuleFor(v => v.Rating).ValidateRating();
     }

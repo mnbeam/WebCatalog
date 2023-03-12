@@ -7,6 +7,6 @@ public class GetReviewListByUserIdQueryValidator : AbstractValidator<GetReviewLi
 {
     public GetReviewListByUserIdQueryValidator()
     {
-        RuleFor(v => v.UserId).ValidateId();
+        RuleFor(v => v.UserId).MustBePositive();
     }
 }

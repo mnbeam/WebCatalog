@@ -7,7 +7,7 @@ public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCo
 {
     public UpdateCategoryCommandValidator()
     {
-        RuleFor(v => v.CategoryId).ValidateId();
+        RuleFor(v => v.CategoryId).MustBePositive();
 
         RuleFor(v => v.Name).ValidateName();
     }

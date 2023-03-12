@@ -7,6 +7,6 @@ public class DeleteBrandCommandValidator : AbstractValidator<DeleteBrandCommand>
 {
     public DeleteBrandCommandValidator()
     {
-        RuleFor(v => v.BrandId).ValidateId();
+        RuleFor(v => v.BrandId).MustBePositive();
     }
 }

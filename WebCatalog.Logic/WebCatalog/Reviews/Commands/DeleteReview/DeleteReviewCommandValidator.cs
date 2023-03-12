@@ -7,6 +7,6 @@ public class DeleteReviewCommandValidator : AbstractValidator<DeleteReviewComman
 {
     public DeleteReviewCommandValidator()
     {
-        RuleFor(v => v.ReviewId).ValidateId();
+        RuleFor(v => v.ReviewId).MustBePositive();
     }
 }

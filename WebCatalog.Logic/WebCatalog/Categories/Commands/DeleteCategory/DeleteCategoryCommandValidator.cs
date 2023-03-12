@@ -7,6 +7,6 @@ public class DeleteCategoryCommandValidator : AbstractValidator<DeleteCategoryCo
 {
     public DeleteCategoryCommandValidator()
     {
-        RuleFor(v => v.CategoryId).ValidateId();
+        RuleFor(v => v.CategoryId).MustBePositive();
     }
 }

@@ -20,6 +20,6 @@ public class ReviewVm : IMapWith<Review>
     {
         profile.CreateMap<Review, ReviewVm>()
             .ForMember(reviewVm => reviewVm.UserName,
-                opt => opt.MapFrom(p => p.AppUser!.UserName));
+                opt => opt.MapFrom(p => p.User!.UserName));
     }
 }

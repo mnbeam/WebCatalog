@@ -7,7 +7,7 @@ public class UpdateReviewCommandValidator : AbstractValidator<UpdateReviewComman
 {
     public UpdateReviewCommandValidator()
     {
-        RuleFor(v => v.ReviewId).ValidateId();
+        RuleFor(v => v.ReviewId).MustBePositive();
 
         RuleFor(v => v.Rating).ValidateRating();
     }

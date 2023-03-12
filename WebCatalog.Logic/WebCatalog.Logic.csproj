@@ -7,10 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="WebCatalog\Baskets\Commands"/>
-        <Folder Include="WebCatalog\Baskets\Queries"/>
         <Folder Include="WebCatalog\Orders\Commands"/>
-        <Folder Include="WebCatalog\Orders\Queries"/>
     </ItemGroup>
 
     <ItemGroup>

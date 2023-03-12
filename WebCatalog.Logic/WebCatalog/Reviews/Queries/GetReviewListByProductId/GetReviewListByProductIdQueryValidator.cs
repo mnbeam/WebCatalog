@@ -8,6 +8,6 @@ public class GetReviewListByProductIdQueryValidator :
 {
     public GetReviewListByProductIdQueryValidator()
     {
-        RuleFor(v => v.ProductId).ValidateId();
+        RuleFor(v => v.ProductId).MustBePositive();
     }
 }

@@ -7,6 +7,6 @@ public class GetCategoryQueryValidator : AbstractValidator<GetCategoryQuery>
 {
     public GetCategoryQueryValidator()
     {
-        RuleFor(v => v.CategoryId).ValidateId();
+        RuleFor(v => v.CategoryId).MustBePositive();
     }
 }

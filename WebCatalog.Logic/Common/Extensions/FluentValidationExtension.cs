@@ -12,11 +12,12 @@ public static class FluentValidationExtension
             .MaximumLength(100).WithMessage("Too long length of Name.");
     }
 
-    public static IRuleBuilderOptions<T, int> ValidateId<T>(this IRuleBuilder<T, int> ruleBuilder)
+    public static IRuleBuilderOptions<T, int> MustBePositive<T>(
+        this IRuleBuilder<T, int> ruleBuilder)
         where T : class
     {
         return ruleBuilder
-            .Must(id => id >= 1).WithMessage("Invalid Id.");
+            .Must(id => id >= 1).WithMessage("Must be positive number.");
     }
 
     public static IRuleBuilderOptions<T, int> ValidateRating<T>(

@@ -2,9 +2,9 @@
 
 public class Basket : BaseEntity
 {
-    public int AppUserId { get; set; }
+    public int UserId { get; set; }
 
-    public AppUser? AppUser { get; set; }
+    public AppUser? User { get; set; }
 
     public List<BasketItem>? BasketItems { get; set; }
 }

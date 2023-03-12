@@ -7,7 +7,7 @@ public class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
 {
     public UpdateBrandCommandValidator()
     {
-        RuleFor(v => v.BrandId).ValidateId();
+        RuleFor(v => v.BrandId).MustBePositive();
 
         RuleFor(v => v.Name).ValidateName();
     }

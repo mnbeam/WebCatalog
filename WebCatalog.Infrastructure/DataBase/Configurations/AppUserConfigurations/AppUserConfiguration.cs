@@ -11,19 +11,19 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
     public void Configure(EntityTypeBuilder<AppUser> builder)
     {
         builder.HasOne(u => u.Basket)
-            .WithOne(b => b.AppUser)
-            .HasForeignKey<Basket>(b => b.AppUserId);
+            .WithOne(b => b.User)
+            .HasForeignKey<Basket>(b => b.UserId);
 
         builder.HasOne(u => u.Order)
-            .WithOne(o => o.AppUser)
-            .HasForeignKey<Order>(o => o.AppUserId);
+            .WithOne(o => o.User)
+            .HasForeignKey<Order>(o => o.UserId);
 
         builder.HasOne(u => u.Token)
             .WithOne(t => t.AppUser)
             .HasForeignKey<Token>(t => t.UserId);
 
         builder.HasMany(u => u.Reviews)
-            .WithOne(r => r.AppUser)
+            .WithOne(r => r.User)
             .HasForeignKey(r => r.UserId);
     }
 }

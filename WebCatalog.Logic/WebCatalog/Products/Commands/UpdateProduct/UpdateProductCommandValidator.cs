@@ -7,11 +7,11 @@ public class UpdateProductCommandValidator : AbstractValidator<UpdateProductComm
 {
     public UpdateProductCommandValidator()
     {
-        RuleFor(v => v.ProductId).ValidateId();
+        RuleFor(v => v.ProductId).MustBePositive();
 
-        RuleFor(v => v.CategoryId).ValidateId();
+        RuleFor(v => v.CategoryId).MustBePositive();
 
-        RuleFor(v => v.CategoryId).ValidateId();
+        RuleFor(v => v.CategoryId).MustBePositive();
 
         RuleFor(v => v.Name).ValidateName();
 

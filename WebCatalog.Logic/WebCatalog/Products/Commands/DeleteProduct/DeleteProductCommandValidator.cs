@@ -7,6 +7,6 @@ public class DeleteProductCommandValidator : AbstractValidator<DeleteProductComm
 {
     public DeleteProductCommandValidator()
     {
-        RuleFor(v => v.ProductId).ValidateId();
+        RuleFor(v => v.ProductId).MustBePositive();
     }
 }

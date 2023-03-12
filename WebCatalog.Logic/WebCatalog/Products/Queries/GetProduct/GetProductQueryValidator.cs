@@ -7,6 +7,6 @@ public class GetProductQueryValidator : AbstractValidator<GetProductQuery>
 {
     public GetProductQueryValidator()
     {
-        RuleFor(v => v.ProductId).ValidateId();
+        RuleFor(v => v.ProductId).MustBePositive();
     }
 }

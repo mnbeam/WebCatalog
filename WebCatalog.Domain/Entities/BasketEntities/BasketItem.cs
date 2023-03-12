@@ -4,8 +4,6 @@ namespace WebCatalog.Domain.Entities.BasketEntities;
 
 public class BasketItem : BaseEntity
 {
-    public decimal UnitPrice { get; set; }
-
     public int Quantity { get; set; }
 
     public int ProductId { get; set; }

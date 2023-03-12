@@ -8,6 +8,6 @@ public class
 {
     public GetProductListByCategoryQueryValidator()
     {
-        RuleFor(v => v.CategoryId).ValidateId();
+        RuleFor(v => v.CategoryId).MustBePositive();
     }
 }

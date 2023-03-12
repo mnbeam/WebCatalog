@@ -8,7 +8,7 @@ public class BasketConfiguration : IEntityTypeConfiguration<Basket>
 {
     public void Configure(EntityTypeBuilder<Basket> builder)
     {
-        builder.Property(b => b.AppUserId)
+        builder.Property(b => b.UserId)
             .IsRequired();
 
         builder.HasMany(b => b.BasketItems)

@@ -7,9 +7,9 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
 {
     public CreateProductCommandValidator()
     {
-        RuleFor(v => v.CategoryId).ValidateId();
+        RuleFor(v => v.CategoryId).MustBePositive();
 
-        RuleFor(v => v.BrandId).ValidateId();
+        RuleFor(v => v.BrandId).MustBePositive();
 
         RuleFor(v => v.Name).ValidateName();
 

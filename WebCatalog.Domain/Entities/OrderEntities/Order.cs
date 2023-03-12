@@ -2,9 +2,9 @@
 
 public class Order : BaseEntity
 {
-    public int AppUserId { get; set; }
+    public int UserId { get; set; }
 
-    public AppUser? AppUser { get; set; }
+    public AppUser? User { get; set; }
 
     public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
 

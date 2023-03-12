@@ -7,6 +7,6 @@ public class GetProductListByBrandQueryValidator : AbstractValidator<GetProductL
 {
     public GetProductListByBrandQueryValidator()
     {
-        RuleFor(v => v.BrandId).ValidateId();
+        RuleFor(v => v.BrandId).MustBePositive();
     }
 }
