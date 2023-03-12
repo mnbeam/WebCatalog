@@ -67,7 +67,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
 
         if (user == null)
         {
-            throw new NotFoundException(nameof(AppUser), id);
+            throw new WebCatalogNotFoundException(nameof(AppUser), id);
         }
 
         return user;
@@ -93,7 +93,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
         if (user == null || !await _userManager.CheckPasswordAsync(user, password))
         {
             //todo InvalidUserNameOrPasswordException
-            throw new NotFoundException(nameof(AppUser), userName);
+            throw new WebCatalogNotFoundException(nameof(AppUser), userName);
         }
 
         return new LoginVm

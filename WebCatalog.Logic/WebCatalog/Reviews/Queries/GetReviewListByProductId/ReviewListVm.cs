@@ -2,5 +2,5 @@
 
 public class ReviewListVm
 {
-    public List<ReviewVm>? ReviewVms { get; set; }
+    public List<ReviewVm>? Reviews { get; set; }
 }

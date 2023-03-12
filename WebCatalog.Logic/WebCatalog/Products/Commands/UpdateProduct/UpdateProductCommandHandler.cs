@@ -24,7 +24,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
 
         if (product == null)
         {
-            throw new NotFoundException(nameof(Product), request.ProductId);
+            throw new WebCatalogNotFoundException(nameof(Product), request.ProductId);
         }
 
         product.CategoryId = request.CategoryId;

@@ -13,7 +13,7 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
 
         builder.Property(r => r.ProductId)
             .IsRequired();
-        
+
         builder.Property(r => r.UserId)
             .IsRequired();
     }

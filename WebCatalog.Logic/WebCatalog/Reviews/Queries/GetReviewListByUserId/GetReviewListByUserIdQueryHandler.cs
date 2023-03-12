@@ -25,7 +25,7 @@ public class GetReviewListByUserIdQueryHandler : IRequestHandler<GetReviewListBy
     {
         return new ReviewListVm
         {
-            ReviewVms = await _dbContext.Reviews
+            Reviews = await _dbContext.Reviews
                 .Where(r => r.UserId == request.UserId)
                 .ProjectTo<ReviewVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken)

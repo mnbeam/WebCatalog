@@ -6,28 +6,28 @@ using WebCatalog.Logic.Common.ExternalServices;
 using WebCatalog.Logic.WebCatalog.Products.Queries.GetProduct;
 using WebCatalog.Logic.WebCatalog.Products.Queries.GetProductList;
 
-namespace WebCatalog.Logic.WebCatalog.Products.Queries.GetProductListByBrandId;
+namespace WebCatalog.Logic.WebCatalog.Products.Queries.GetProductListByCategory;
 
-public class
-    GetProductListByBrandQueryHandler : IRequestHandler<GetProductListByBrandQuery, ProductListVm>
+public class GetProductListByCategoryQueryHandler : IRequestHandler<GetProductListByCategoryQuery,
+    ProductListVm>
 {
     private readonly AppDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public GetProductListByBrandQueryHandler(AppDbContext dbContext,
+    public GetProductListByCategoryQueryHandler(AppDbContext dbContext,
         IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;
     }
 
-    public async Task<ProductListVm> Handle(GetProductListByBrandQuery request,
+    public async Task<ProductListVm> Handle(GetProductListByCategoryQuery request,
         CancellationToken cancellationToken)
     {
         return new ProductListVm
         {
-            ProductVms = await _dbContext.Products
-                .Where(p => p.BrandId == request.BrandId)
+            Products = await _dbContext.Products
+                .Where(p => p.CategoryId == request.CategoryId)
                 .ProjectTo<ProductVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken)
         };

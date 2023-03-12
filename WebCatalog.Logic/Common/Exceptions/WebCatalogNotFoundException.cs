@@ -1,8 +1,8 @@
 ﻿namespace WebCatalog.Logic.Common.Exceptions;
 
-public class NotFoundException : Exception
+public class WebCatalogNotFoundException : Exception
 {
-    public NotFoundException(string name, object key)
+    public WebCatalogNotFoundException(string name, object key)
         : base($"Entity \"{name}\" ({key}) not found")
     {
     }

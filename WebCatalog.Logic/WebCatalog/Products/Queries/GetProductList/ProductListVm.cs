@@ -4,5 +4,5 @@ namespace WebCatalog.Logic.WebCatalog.Products.Queries.GetProductList;
 
 public class ProductListVm
 {
-    public List<ProductVm>? ProductVms { get; set; }
+    public List<ProductVm>? Products { get; set; }
 }

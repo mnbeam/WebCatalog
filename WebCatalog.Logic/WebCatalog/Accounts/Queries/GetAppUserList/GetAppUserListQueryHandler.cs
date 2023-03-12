@@ -7,7 +7,7 @@ using WebCatalog.Logic.Common.ExternalServices;
 namespace WebCatalog.Logic.WebCatalog.Accounts.Queries.GetAppUserList;
 
 public class
-    GetAppUserListQueryHandler : IRequestHandler<GetAppUserListQuery, GetAppUserListQueryVm>
+    GetAppUserListQueryHandler : IRequestHandler<GetAppUserListQuery, AppUserListVm>
 {
     private readonly AppDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -19,10 +19,10 @@ public class
         _mapper = mapper;
     }
 
-    public async Task<GetAppUserListQueryVm> Handle(GetAppUserListQuery request,
+    public async Task<AppUserListVm> Handle(GetAppUserListQuery request,
         CancellationToken cancellationToken)
     {
-        return new GetAppUserListQueryVm
+        return new AppUserListVm
         {
             AppUsers = await _dbContext.Users
                 .ProjectTo<AppUserVm>(_mapper.ConfigurationProvider)

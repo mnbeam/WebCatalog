@@ -28,7 +28,7 @@ public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductVm
 
         if (product == null)
         {
-            throw new NotFoundException(nameof(Product), request.ProductId);
+            throw new WebCatalogNotFoundException(nameof(Product), request.ProductId);
         }
 
         return _mapper.Map<ProductVm>(product);

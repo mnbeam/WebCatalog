@@ -25,7 +25,7 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
 
         if (review == null || review.UserId != _userAccessor.UserId)
         {
-            throw new NotFoundException(nameof(Review), request.ReviewId);
+            throw new WebCatalogNotFoundException(nameof(Review), request.ReviewId);
         }
 
         review.Content = request.Content;

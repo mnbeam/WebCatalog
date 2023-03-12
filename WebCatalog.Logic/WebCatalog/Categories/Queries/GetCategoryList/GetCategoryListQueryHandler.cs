@@ -27,7 +27,7 @@ public class GetCategoryListQueryHandler : IRequestHandler<GetCategoryListQuery,
 
         return new CategoryListVm
         {
-            CategoryList = categories
+            Categories = categories
         };
     }
 }

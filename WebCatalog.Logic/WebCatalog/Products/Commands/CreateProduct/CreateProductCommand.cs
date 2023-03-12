@@ -2,7 +2,7 @@
 
 namespace WebCatalog.Logic.WebCatalog.Products.Commands.CreateProduct;
 
-public class CreateProductCommand : IRequest<int>
+public class CreateProductCommand : IRequest
 {
     public int CategoryId { get; set; }
 

@@ -18,10 +18,15 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, i
 
     public async Task<int> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
+        Console.WriteLine(_userAccessor.UserId);
+
         var review = new Review
         {
-            ProductId = request.ProductId, UserId = _userAccessor.UserId, Rating = request.Rating,
-            Content = request.Content, CreatedTime = DateTime.Now
+            ProductId = request.ProductId,
+            UserId = _userAccessor.UserId,
+            Rating = request.Rating,
+            Content = request.Content,
+            CreatedTime = DateTime.Now
         };
 
         await _dbContext.Reviews.AddAsync(review, cancellationToken);

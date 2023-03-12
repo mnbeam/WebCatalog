@@ -21,7 +21,7 @@ public class AddRoleCommandHandler : IRequestHandler<AddRoleCommand>
 
         if (user == null)
         {
-            throw new NotFoundException(nameof(AppUser), request.UserId);
+            throw new WebCatalogNotFoundException(nameof(AppUser), request.UserId);
         }
 
         var roleResult = await _userManager.AddToRoleAsync(user, request.Role.GetEnumDescription());

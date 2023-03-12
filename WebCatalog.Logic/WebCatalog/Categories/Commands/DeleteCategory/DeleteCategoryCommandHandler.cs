@@ -23,7 +23,7 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
 
         if (category == null)
         {
-            throw new NotFoundException(nameof(Category), request.CategoryId);
+            throw new WebCatalogNotFoundException(nameof(Category), request.CategoryId);
         }
 
         _dbContext.Categories.Remove(category);

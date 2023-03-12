@@ -21,7 +21,7 @@ public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessToken
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, request.AppUser.ToString()),
+            new(ClaimTypes.Name, request.AppUser.Id.ToString()),
             new(JwtRegisteredClaimNames.Sub, request.AppUser.UserName!),
             new(JwtRegisteredClaimNames.Email, request.AppUser.Email!)
         };

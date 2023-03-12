@@ -25,7 +25,7 @@ public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
 
         if (review == null || review.UserId != _userAccessor.UserId)
         {
-            throw new NotFoundException(nameof(Review), request.ReviewId);
+            throw new WebCatalogNotFoundException(nameof(Review), request.ReviewId);
         }
 
         _dbContext.Reviews.Remove(review);

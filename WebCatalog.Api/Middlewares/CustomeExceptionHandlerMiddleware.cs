@@ -8,8 +8,10 @@ public class CustomExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public CustomExceptionHandlerMiddleware(RequestDelegate next) =>
+    public CustomExceptionHandlerMiddleware(RequestDelegate next)
+    {
         _next = next;
+    }
 
     public async Task Invoke(HttpContext context)
     {
@@ -17,7 +19,7 @@ public class CustomExceptionHandlerMiddleware
         {
             await _next(context);
         }
-        catch(Exception exception)
+        catch (Exception exception)
         {
             await HandleExceptionAsync(context, exception);
         }
@@ -27,23 +29,28 @@ public class CustomExceptionHandlerMiddleware
     {
         var code = HttpStatusCode.InternalServerError;
         var result = string.Empty;
-        switch(exception)
+        switch (exception)
         {
             case WebCatalogValidationException validationException:
                 code = HttpStatusCode.BadRequest;
                 result = JsonSerializer.Serialize(validationException.Errors);
                 break;
-            case NotFoundException notFoundException:
+            case WebCatalogNotFoundException notFoundException:
                 code = HttpStatusCode.NotFound;
                 result = notFoundException.Message;
                 break;
+            case WebCatalogDublicateException dublicateException:
+                code = HttpStatusCode.Conflict;
+                result = dublicateException.Message;
+                break;
         }
+
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)code;
+        context.Response.StatusCode = (int) code;
 
         if (result == string.Empty)
         {
-            result = JsonSerializer.Serialize(new { errpr = exception.Message });
+            result = JsonSerializer.Serialize(new {errpr = exception.Message});
         }
 
         return context.Response.WriteAsync(result);

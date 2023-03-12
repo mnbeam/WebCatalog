@@ -34,23 +34,23 @@ public class CategoryController : BaseController
 
     [HttpPost]
     public async Task<IActionResult> CreateCategory(CreateCategoryCommand createCategoryCommand)
-    { 
+    {
         await Mediator.Send(createCategoryCommand);
 
         return Ok();
     }
-    
+
     [HttpPut]
     public async Task<IActionResult> UpdateCategory(UpdateCategoryCommand updateCategoryCommand)
-    { 
+    {
         await Mediator.Send(updateCategoryCommand);
 
         return Ok();
     }
-    
+
     [HttpDelete]
     public async Task<IActionResult> DeleteCategory(DeleteCategoryCommand deleteCategoryCommand)
-    { 
+    {
         await Mediator.Send(deleteCategoryCommand);
 
         return Ok();

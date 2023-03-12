@@ -22,7 +22,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
 
         if (category == null)
         {
-            throw new NotFoundException(nameof(Category), request.CategoryId);
+            throw new WebCatalogNotFoundException(nameof(Category), request.CategoryId);
         }
 
         category.Name = request.Name;

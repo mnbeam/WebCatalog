@@ -24,7 +24,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 
         if (product == null)
         {
-            throw new NotFoundException(nameof(Product), request.ProductId);
+            throw new WebCatalogNotFoundException(nameof(Product), request.ProductId);
         }
 
         _dbContext.Products.Remove(product);

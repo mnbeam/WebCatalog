@@ -7,6 +7,6 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
 {
     public CreateCategoryCommandValidator()
     {
-        RuleFor(v => v.Name).ValidateCategoryName();
+        RuleFor(v => v.Name).ValidateName();
     }
 }

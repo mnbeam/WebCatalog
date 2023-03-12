@@ -5,5 +5,5 @@ namespace WebCatalog.Logic.WebCatalog.Categories.Queries.GetCategoryList;
 
 public class CategoryListVm : IRequest
 {
-    public List<GetCategoryVm>? CategoryList { get; set; }
+    public List<GetCategoryVm>? Categories { get; set; }
 }

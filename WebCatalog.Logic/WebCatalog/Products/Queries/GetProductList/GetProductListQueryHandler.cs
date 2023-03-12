@@ -24,7 +24,7 @@ public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery, P
     {
         return new ProductListVm
         {
-            ProductVms = await _dbContext.Products
+            Products = await _dbContext.Products
                 .ProjectTo<ProductVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken)
         };

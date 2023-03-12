@@ -10,7 +10,16 @@ namespace WebCatalog.Api.Controllers;
 
 public class AccountController : BaseController
 {
-    [HttpPost]
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> GetUsers()
+    {
+        var userListVm = await Mediator.Send(new GetAppUserListQuery());
+
+        return Ok(userListVm);
+    }
+
+    [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterCommand registerCommand)
     {
         await Mediator.Send(registerCommand);
@@ -18,7 +27,7 @@ public class AccountController : BaseController
         return Ok();
     }
 
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<IActionResult> Login(LoginCommand loginCommand)
     {
         var loginVm = await Mediator.Send(loginCommand);
@@ -27,7 +36,7 @@ public class AccountController : BaseController
     }
 
     [Authorize]
-    [HttpPost]
+    [HttpPost("roles")]
     public async Task<IActionResult> AddRole(AddRoleCommand addRoleCommand)
     {
         await Mediator.Send(addRoleCommand);
@@ -36,20 +45,11 @@ public class AccountController : BaseController
     }
 
     [Authorize]
-    [HttpPost]
+    [HttpDelete("roles")]
     public async Task<IActionResult> RemoveRole(RemoveRoleCommand removeRoleCommand)
     {
         await Mediator.Send(removeRoleCommand);
 
         return Ok();
-    }
-
-    [Authorize]
-    [HttpGet]
-    public async Task<IActionResult> GetUsers()
-    {
-        var userListVm = await Mediator.Send(new GetAppUserListQuery());
-
-        return Ok(userListVm);
     }
 }

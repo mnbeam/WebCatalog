@@ -15,7 +15,7 @@ public static class DependencyInjection
             optionsAction.UseSqlServer(configuration.GetConnectionString("MsSql")));
 
         services.AddScoped<AppDbContext>(provider => provider.GetService<ApplicationDbContext>());
-        
+
         return services;
     }
 }

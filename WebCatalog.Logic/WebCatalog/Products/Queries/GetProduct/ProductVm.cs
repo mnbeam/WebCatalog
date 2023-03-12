@@ -5,6 +5,8 @@ namespace WebCatalog.Logic.WebCatalog.Products.Queries.GetProduct;
 
 public class ProductVm : IMapWith<Product>
 {
+    public int Id { get; set; }
+
     public int CategoryId { get; set; }
 
     public int BrandId { get; set; }

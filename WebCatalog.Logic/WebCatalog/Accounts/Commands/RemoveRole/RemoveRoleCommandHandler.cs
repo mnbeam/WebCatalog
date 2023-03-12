@@ -21,7 +21,7 @@ public class RemoveRoleCommandHandler : IRequestHandler<RemoveRoleCommand>
 
         if (user == null)
         {
-            throw new NotFoundException(nameof(AppUser), request.UserId);
+            throw new WebCatalogNotFoundException(nameof(AppUser), request.UserId);
         }
 
         var roleResult =

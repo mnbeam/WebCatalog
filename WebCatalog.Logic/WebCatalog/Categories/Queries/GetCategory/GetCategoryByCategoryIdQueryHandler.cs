@@ -27,7 +27,7 @@ public class GetCategoryQueryHandler : IRequestHandler<GetCategoryQuery, GetCate
 
         if (category == null)
         {
-            throw new NotFoundException(nameof(Category), request.CategoryId);
+            throw new WebCatalogNotFoundException(nameof(Category), request.CategoryId);
         }
 
         return _mapper.Map<GetCategoryVm>(category);
