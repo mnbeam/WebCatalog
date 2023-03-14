@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="WebCatalog\Orders\Commands"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\WebCatalog.Domain\WebCatalog.Domain.csproj"/>
     </ItemGroup>
 

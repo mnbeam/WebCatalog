@@ -35,7 +35,7 @@ public class RemoveBasketItemCommandHandler : IRequestHandler<RemoveBasketItemCo
             {
                 UserId = _userAccessor.UserId
             };
-            
+
             await _mediator.Send(createBasketCommand, cancellationToken);
 
             throw new WebCatalogEmptyBasketException();

@@ -1,5 +1,7 @@
-﻿namespace WebCatalog.Logic.WebCatalog.Orders.Queries.GetOrderList;
+﻿using MediatR;
 
-public class GetOrdersCommand
+namespace WebCatalog.Logic.WebCatalog.Orders.Queries.GetOrderList;
+
+public class GetOrdersCommand : IRequest<OrderListVm>
 {
 }
