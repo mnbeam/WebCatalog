@@ -18,7 +18,7 @@ public class OrderController : BaseController
 
         return Ok(ordersVm);
     }
-    
+
     [Authorize]
     [HttpGet("{orderId}")]
     public async Task<IActionResult> GetOrder(int orderId)
@@ -32,13 +32,13 @@ public class OrderController : BaseController
 
         return Ok(orderVm);
     }
-    
+
     [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateOrder()
     {
         var createOrderCommand = new CreateOrderCommand();
-        
+
         await Mediator.Send(createOrderCommand);
 
         return Ok();
