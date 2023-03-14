@@ -43,6 +43,10 @@ public class CustomExceptionHandlerMiddleware
                 code = HttpStatusCode.Conflict;
                 result = dublicateException.Message;
                 break;
+            case WebCatalogEmptyBasketException emptyBasketException:
+                code = HttpStatusCode.NotFound;
+                result = emptyBasketException.Message;
+                break;
         }
 
         context.Response.ContentType = "application/json";
