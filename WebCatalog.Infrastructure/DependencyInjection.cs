@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebCatalog.Infrastructure.DataBase;
+using WebCatalog.Infrastructure.Services;
 using WebCatalog.Logic.Common.ExternalServices;
 
 namespace WebCatalog.Infrastructure;
@@ -15,6 +16,8 @@ public static class DependencyInjection
             optionsAction.UseSqlServer(configuration.GetConnectionString("MsSql")));
 
         services.AddScoped<AppDbContext>(provider => provider.GetService<ApplicationDbContext>());
+
+        services.AddTransient<IDateTimeService, DateTimeService>();
 
         return services;
     }

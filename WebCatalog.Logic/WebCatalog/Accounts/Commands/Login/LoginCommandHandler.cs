@@ -14,6 +14,7 @@ namespace WebCatalog.Logic.WebCatalog.Accounts.Commands.Login;
 public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
 {
     private readonly AuthOptions _authOptions;
+    private readonly IDateTimeService _dateTimeService;
     private readonly AppDbContext _dbContext;
     private readonly IMediator _mediator;
     private readonly UserManager<AppUser> _userManager;
@@ -21,11 +22,13 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
     public LoginCommandHandler(AppDbContext dbContext,
         UserManager<AppUser> userManager,
         IMediator mediator,
-        IOptions<AuthOptions> authOptions)
+        IOptions<AuthOptions> authOptions,
+        IDateTimeService dateTimeService)
     {
         _dbContext = dbContext;
         _userManager = userManager;
         _mediator = mediator;
+        _dateTimeService = dateTimeService;
         _authOptions = authOptions.Value;
     }
 
@@ -80,7 +83,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
             && t.Client == _authOptions.Audience
             && t.Value == refreshToken);
 
-        if (token == null || token.ExpireTime < DateTime.Now)
+        if (token == null || token.ExpireTime < _dateTimeService.Now)
         {
             throw new Exception("InvalidRefreshToken");
         }

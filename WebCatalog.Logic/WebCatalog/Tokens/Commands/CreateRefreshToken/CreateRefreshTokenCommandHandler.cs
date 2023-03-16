@@ -10,12 +10,15 @@ namespace WebCatalog.Logic.WebCatalog.Tokens.Commands.CreateRefreshToken;
 internal class CreateRefreshTokenCommandHandler : IRequestHandler<CreateRefreshTokenCommand, string>
 {
     private readonly AuthOptions _authOptions;
+    private readonly IDateTimeService _dateTimeService;
     private readonly AppDbContext _dbContext;
 
     public CreateRefreshTokenCommandHandler(AppDbContext dbContext,
-        IOptions<AuthOptions> authOptions)
+        IOptions<AuthOptions> authOptions,
+        IDateTimeService dateTimeService)
     {
         _dbContext = dbContext;
+        _dateTimeService = dateTimeService;
         _authOptions = authOptions.Value;
     }
 
@@ -26,7 +29,7 @@ internal class CreateRefreshTokenCommandHandler : IRequestHandler<CreateRefreshT
             token.UserId == request.UserId
             && token.Client == _authOptions.Audience, cancellationToken);
 
-        var expireTime = DateTime.Now.AddDays(_authOptions.ExpireTimeRefreshTokenDays);
+        var expireTime = _dateTimeService.Now.AddDays(_authOptions.ExpireTimeRefreshTokenDays);
 
         var tokenValue = $"{request.UserId}-{Guid.NewGuid():D}";
 
@@ -46,7 +49,7 @@ internal class CreateRefreshTokenCommandHandler : IRequestHandler<CreateRefreshT
 
         token.ExpireTime = expireTime;
         token.Value = tokenValue;
-        token.UpdatedTime = DateTime.Now;
+        token.UpdatedTime = _dateTimeService.Now;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

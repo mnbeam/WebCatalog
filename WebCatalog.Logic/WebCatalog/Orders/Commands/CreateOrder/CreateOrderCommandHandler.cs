@@ -10,14 +10,17 @@ namespace WebCatalog.Logic.WebCatalog.Orders.Commands.CreateOrder;
 
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
 {
+    private readonly IDateTimeService _dateTimeService;
     private readonly AppDbContext _dbContext;
     private readonly IUserAccessor _userAccessor;
 
     public CreateOrderCommandHandler(AppDbContext dbContext,
-        IUserAccessor userAccessor)
+        IUserAccessor userAccessor,
+        IDateTimeService dateTimeService)
     {
         _dbContext = dbContext;
         _userAccessor = userAccessor;
+        _dateTimeService = dateTimeService;
     }
 
     public async Task Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -63,7 +66,8 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
         var order = new Order
         {
             UserId = _userAccessor.UserId,
-            OrderItems = orderItems
+            OrderItems = orderItems,
+            OrderDate = _dateTimeService.Now
         };
 
         _dbContext.Add(order);

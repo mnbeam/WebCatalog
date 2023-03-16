@@ -9,13 +9,17 @@ namespace WebCatalog.Logic.WebCatalog.Reviews.Commands.UpdateReview;
 
 public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
 {
+    private readonly IDateTimeService _dateTimeService;
     private readonly AppDbContext _dbContext;
     private readonly IUserAccessor _userAccessor;
 
-    public UpdateReviewCommandHandler(AppDbContext dbContext, IUserAccessor userAccessor)
+    public UpdateReviewCommandHandler(AppDbContext dbContext,
+        IUserAccessor userAccessor,
+        IDateTimeService dateTimeService)
     {
         _dbContext = dbContext;
         _userAccessor = userAccessor;
+        _dateTimeService = dateTimeService;
     }
 
     public async Task Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
@@ -30,7 +34,7 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
 
         review.Content = request.Content;
         review.Rating = request.Rating;
-        review.EditedTime = DateTime.Now;
+        review.EditedTime = _dateTimeService.Now;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

@@ -6,7 +6,7 @@ public class Order : BaseEntity
 
     public AppUser? User { get; set; }
 
-    public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset OrderDate { get; set; }
 
     public List<OrderItem> OrderItems { get; set; } = null!;
 }

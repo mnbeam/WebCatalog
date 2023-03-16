@@ -4,15 +4,19 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WebCatalog.Logic.Common.Configurations;
+using WebCatalog.Logic.Common.ExternalServices;
 
 namespace WebCatalog.Logic.WebCatalog.Tokens.Commands.CreateAccessToken;
 
 public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessTokenCommand, string>
 {
     private readonly AuthOptions _authOptions;
+    private readonly IDateTimeService _dateTimeService;
 
-    public CreateAccessTokenCommandHandler(IOptions<AuthOptions> authOptions)
+    public CreateAccessTokenCommandHandler(IOptions<AuthOptions> authOptions,
+        IDateTimeService dateTimeService)
     {
+        _dateTimeService = dateTimeService;
         _authOptions = authOptions.Value;
     }
 
@@ -30,8 +34,8 @@ public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessToken
             _authOptions.Issuer,
             _authOptions.Audience,
             claims,
-            DateTime.Now,
-            DateTime.Now.AddMinutes(_authOptions.ExpireTimeTokenMinutes),
+            _dateTimeService.Now,
+            _dateTimeService.Now.AddMinutes(_authOptions.ExpireTimeTokenMinutes),
             new SigningCredentials(_authOptions.SymmetricSecurityKey,
                 SecurityAlgorithms.HmacSha256));
 

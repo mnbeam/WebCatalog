@@ -7,26 +7,28 @@ namespace WebCatalog.Logic.WebCatalog.Reviews.Commands.CreateReview;
 
 public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, int>
 {
+    private readonly IDateTimeService _dateTimeService;
     private readonly AppDbContext _dbContext;
     private readonly IUserAccessor _userAccessor;
 
-    public CreateReviewCommandHandler(AppDbContext dbContext, IUserAccessor userAccessor)
+    public CreateReviewCommandHandler(AppDbContext dbContext,
+        IUserAccessor userAccessor,
+        IDateTimeService dateTimeService)
     {
         _dbContext = dbContext;
         _userAccessor = userAccessor;
+        _dateTimeService = dateTimeService;
     }
 
     public async Task<int> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
-        Console.WriteLine(_userAccessor.UserId);
-
         var review = new Review
         {
             ProductId = request.ProductId,
             UserId = _userAccessor.UserId,
             Rating = request.Rating,
             Content = request.Content,
-            CreatedTime = DateTime.Now
+            CreatedTime = _dateTimeService.Now
         };
 
         await _dbContext.Reviews.AddAsync(review, cancellationToken);
