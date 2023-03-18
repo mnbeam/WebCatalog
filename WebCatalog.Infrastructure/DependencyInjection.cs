@@ -12,8 +12,23 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<ApplicationDbContext>(optionsAction =>
-            optionsAction.UseSqlServer(configuration.GetConnectionString("MsSql")));
+        var useInMemoryDatabase = true;
+
+        if (configuration["UseInMemoryDatabase"] != null)
+        {
+            useInMemoryDatabase = bool.Parse(configuration["UseInMemoryDatabase"]);
+        }
+
+        if (useInMemoryDatabase)
+        {
+            services.AddDbContext<ApplicationDbContext>(optionsAction =>
+                optionsAction.UseInMemoryDatabase("WebCatalogInMemoryDb"));
+        }
+        else
+        {
+            services.AddDbContext<ApplicationDbContext>(optionsAction =>
+                optionsAction.UseSqlServer(configuration.GetConnectionString("MsSql")));
+        }
 
         services.AddScoped<AppDbContext>(provider => provider.GetService<ApplicationDbContext>());
 

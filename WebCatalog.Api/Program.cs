@@ -5,11 +5,14 @@ using WebCatalog.Api.Middlewares;
 using WebCatalog.Api.UserAccessor;
 using WebCatalog.Domain.Entities;
 using WebCatalog.Infrastructure;
+using WebCatalog.Infrastructure.DataBase;
 using WebCatalog.Logic;
 using WebCatalog.Logic.Common.Configurations;
 using WebCatalog.Logic.Common.ExternalServices;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.AddConsole();
 
 var configuration = builder.Configuration;
 
@@ -61,6 +64,23 @@ builder.Services.AddAuthentication(options =>
     });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var scopedProvider = scope.ServiceProvider;
+    try
+    {
+        var dbContext = scopedProvider.GetRequiredService<AppDbContext>();
+        var userManager = scopedProvider.GetRequiredService<UserManager<AppUser>>();
+        var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+
+        await ApplicationDbContextSeed.SeedAsync(dbContext, userManager, roleManager, app.Logger);
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "An error occurred seeding the DB.");
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

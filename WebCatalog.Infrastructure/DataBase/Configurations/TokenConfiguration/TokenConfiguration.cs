@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WebCatalog.Domain.Entities;
 
-namespace WebCatalog.Infrastructure.DataBase.Configurations.BaseConfigurations;
+namespace WebCatalog.Infrastructure.DataBase.Configurations.TokenConfiguration;
 
 public class TokenConfiguration : IEntityTypeConfiguration<Token>
 {
