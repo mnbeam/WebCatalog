@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using WebCatalog.Domain.Entities;
 using WebCatalog.Domain.Enums;
+using WebCatalog.Logic.Common.Exceptions;
 using WebCatalog.Logic.Common.Extensions;
 
 namespace WebCatalog.Logic.WebCatalog.Accounts.Commands.Register;
@@ -26,7 +27,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
 
         if (!createResult.Succeeded)
         {
-            throw new Exception("Customer creation error");
+            throw new WebCatalogValidationException(createResult.Errors.Select(e => e.Description)
+                .ToArray());
         }
 
         var roleResult =
