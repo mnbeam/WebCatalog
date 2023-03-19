@@ -61,7 +61,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
 
         if (dividerIndex < 0)
         {
-            throw new Exception("InvalidRefreshToken");
+            throw new WebCatalogValidationException("InvalidRefreshToken");
         }
 
         var id = refreshToken[..dividerIndex];
@@ -85,7 +85,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
 
         if (token == null || token.ExpireTime < _dateTimeService.Now)
         {
-            throw new Exception("InvalidRefreshToken");
+            throw new WebCatalogValidationException("InvalidRefreshToken");
         }
     }
 
