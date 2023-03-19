@@ -28,6 +28,7 @@ public class GetOrderCommandHandler : IRequestHandler<GetOrderCommand, OrderVm>
         var order = await _dbContext.Orders
             .Where(o => o.UserId == _userAccessor.UserId &&
                         o.Id == request.OrderId)
+            .Include(o => o.OrderItems)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (order == null)
