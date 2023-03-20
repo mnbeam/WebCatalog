@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebCatalog.Logic.WebCatalog.Categories.Commands.CreateCategory;
 using WebCatalog.Logic.WebCatalog.Categories.Commands.DeleteCategory;
 using WebCatalog.Logic.WebCatalog.Categories.Commands.UpdateCategory;
@@ -32,6 +33,7 @@ public class CategoryController : BaseController
         return Ok(categoriesVm);
     }
 
+    [Authorize(Policy = "ForSeller")]
     [HttpPost]
     public async Task<IActionResult> CreateCategory(CreateCategoryCommand createCategoryCommand)
     {
@@ -40,6 +42,7 @@ public class CategoryController : BaseController
         return Ok();
     }
 
+    [Authorize(Policy = "ForSeller")]
     [HttpPut]
     public async Task<IActionResult> UpdateCategory(UpdateCategoryCommand updateCategoryCommand)
     {
@@ -48,6 +51,7 @@ public class CategoryController : BaseController
         return Ok();
     }
 
+    [Authorize(Policy = "ForSeller")]
     [HttpDelete]
     public async Task<IActionResult> DeleteCategory(DeleteCategoryCommand deleteCategoryCommand)
     {

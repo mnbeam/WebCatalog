@@ -95,7 +95,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
 
         if (user == null || !await _userManager.CheckPasswordAsync(user, password))
         {
-            //todo InvalidUserNameOrPasswordException
             throw new WebCatalogNotFoundException(nameof(AppUser), userName);
         }
 

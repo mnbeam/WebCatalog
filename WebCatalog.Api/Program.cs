@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -5,10 +6,12 @@ using Microsoft.OpenApi.Models;
 using WebCatalog.Api.Middlewares;
 using WebCatalog.Api.UserAccessor;
 using WebCatalog.Domain.Entities;
+using WebCatalog.Domain.Enums;
 using WebCatalog.Infrastructure;
 using WebCatalog.Infrastructure.DataBase;
 using WebCatalog.Logic;
 using WebCatalog.Logic.Common.Configurations;
+using WebCatalog.Logic.Common.Extensions;
 using WebCatalog.Logic.Common.ExternalServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,27 +27,34 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IUserAccessor, UserAccessor>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
-    c.SwaggerDoc("v1", new OpenApiInfo {
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
         Title = "JWTToken_Auth_API", Version = "v1"
     });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() {
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer tokenValue\"",
+        Description =
+            "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer tokenValue\""
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
         {
-            new OpenApiSecurityScheme {
-                Reference = new OpenApiReference {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            new string[] { }
         }
     });
 });
@@ -86,6 +96,18 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = authOptions.SymmetricSecurityKey
         };
     });
+
+builder.Services.AddAuthorization(option =>
+{
+    option.AddPolicy("ForAdmin", policy =>
+        policy.RequireAssertion(x =>
+            x.User.HasClaim(ClaimTypes.Role, Role.Admin.GetEnumDescription())));
+
+    option.AddPolicy("ForSeller", policy =>
+        policy.RequireAssertion(x =>
+            x.User.HasClaim(ClaimTypes.Role, Role.Seller.GetEnumDescription()) ||
+            x.User.HasClaim(ClaimTypes.Role, Role.Admin.GetEnumDescription())));
+});
 
 var app = builder.Build();
 

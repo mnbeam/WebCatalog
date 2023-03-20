@@ -1,8 +1,10 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using WebCatalog.Domain.Entities;
 using WebCatalog.Logic.Common.Configurations;
 using WebCatalog.Logic.Common.ExternalServices;
 
@@ -12,11 +14,14 @@ public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessToken
 {
     private readonly AuthOptions _authOptions;
     private readonly IDateTimeService _dateTimeService;
+    private readonly UserManager<AppUser> _userManager;
 
     public CreateAccessTokenCommandHandler(IOptions<AuthOptions> authOptions,
-        IDateTimeService dateTimeService)
+        IDateTimeService dateTimeService,
+        UserManager<AppUser> userManager)
     {
         _dateTimeService = dateTimeService;
+        _userManager = userManager;
         _authOptions = authOptions.Value;
     }
 
@@ -29,6 +34,13 @@ public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessToken
             new(JwtRegisteredClaimNames.Sub, request.AppUser.UserName!),
             new(JwtRegisteredClaimNames.Email, request.AppUser.Email!)
         };
+
+        var roles = await _userManager.GetRolesAsync(request.AppUser);
+
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
 
         var token = new JwtSecurityToken(
             _authOptions.Issuer,

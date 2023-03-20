@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebCatalog.Logic.WebCatalog.Brands.Commands.CreateBrand;
 using WebCatalog.Logic.WebCatalog.Brands.Commands.DeleteBrand;
 using WebCatalog.Logic.WebCatalog.Brands.Commands.UpdateBrand;
@@ -18,6 +19,7 @@ public class BrandController : BaseController
         return Ok(brandsVm);
     }
 
+    [Authorize(Policy = "ForSeller")]
     [HttpPost]
     public async Task<IActionResult> CreateBrand(CreateBrandCommand createBrandCommand)
     {
@@ -26,6 +28,7 @@ public class BrandController : BaseController
         return Ok();
     }
 
+    [Authorize(Policy = "ForSeller")]
     [HttpPut]
     public async Task<IActionResult> UpdateBrand(UpdateBrandCommand updateBrandCommand)
     {
@@ -34,6 +37,7 @@ public class BrandController : BaseController
         return Ok();
     }
 
+    [Authorize(Policy = "ForSeller")]
     [HttpDelete]
     public async Task<IActionResult> DeleteBrand(DeleteBrandCommand deleteBrandCommand)
     {

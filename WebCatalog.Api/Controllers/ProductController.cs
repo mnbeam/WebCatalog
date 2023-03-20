@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebCatalog.Logic.WebCatalog.Products.Commands.CreateProduct;
 using WebCatalog.Logic.WebCatalog.Products.Commands.DeleteProduct;
 using WebCatalog.Logic.WebCatalog.Products.Commands.UpdateProduct;
@@ -60,6 +61,7 @@ public class ProductController : BaseController
         return Ok(vm);
     }
 
+    [Authorize(Policy = "ForSeller")]
     [HttpPost]
     public async Task<IActionResult> CreateProduct(CreateProductCommand createProductCommand)
     {
@@ -68,6 +70,7 @@ public class ProductController : BaseController
         return Ok();
     }
 
+    [Authorize(Policy = "ForSeller")]
     [HttpPut]
     public async Task<IActionResult> UpdateProduct(UpdateProductCommand updateProductCommand)
     {
@@ -76,6 +79,7 @@ public class ProductController : BaseController
         return Ok();
     }
 
+    [Authorize(Policy = "ForSeller")]
     [HttpDelete]
     public async Task<IActionResult> DeleteProduct(DeleteProductCommand deleteProductCommand)
     {

@@ -10,7 +10,7 @@ namespace WebCatalog.Api.Controllers;
 
 public class AccountController : BaseController
 {
-    [Authorize]
+    [Authorize(Policy = "ForAdmin")]
     [HttpGet]
     public async Task<IActionResult> GetUsers()
     {
@@ -35,7 +35,7 @@ public class AccountController : BaseController
         return Ok(loginVm);
     }
 
-    [Authorize]
+    [Authorize(Policy = "ForAdmin")]
     [HttpPost("roles")]
     public async Task<IActionResult> AddRole(AddRoleCommand addRoleCommand)
     {
@@ -44,7 +44,7 @@ public class AccountController : BaseController
         return Ok();
     }
 
-    [Authorize]
+    [Authorize(Policy = "ForAdmin")]
     [HttpDelete("roles")]
     public async Task<IActionResult> RemoveRole(RemoveRoleCommand removeRoleCommand)
     {
