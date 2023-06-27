@@ -6,5 +6,5 @@ public class Basket : BaseEntity
 
     public AppUser? User { get; set; }
 
-    public List<BasketItem>? BasketItems { get; set; }
+    public List<BasketItem> Items { get; set; } = new();
 }

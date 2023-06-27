@@ -10,7 +10,7 @@ using WebCatalog.Logic.Common.Mappings;
 
 namespace WebCatalog.Logic;
 
-public static class DependencyInjection
+public static class ConfigureServices
 {
     public static IServiceCollection AddLogic(this IServiceCollection services,
         IConfiguration configuration)

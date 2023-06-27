@@ -12,7 +12,7 @@ public class UserAccessor : IUserAccessor
         _contextAccessor = contextAccessor ?? throw new ArgumentException();
     }
 
-    public ClaimsPrincipal User => _contextAccessor.HttpContext.User;
+    public ClaimsPrincipal User => _contextAccessor.HttpContext!.User;
 
     public int UserId => int.Parse(User.Identity.Name);
 }

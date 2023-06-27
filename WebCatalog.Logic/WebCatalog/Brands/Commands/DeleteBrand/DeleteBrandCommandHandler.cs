@@ -18,13 +18,8 @@ public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand>
     public async Task Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
     {
         var brand = await _dbContext.Brands
-            .Where(b => b.Id == request.BrandId)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (brand == null)
-        {
-            throw new WebCatalogNotFoundException(nameof(Brand), request.BrandId);
-        }
+                        .FirstOrDefaultAsync(b => b.Id == request.BrandId, cancellationToken)
+                    ?? throw new WebCatalogNotFoundException(nameof(Brand), request.BrandId);
 
         _dbContext.Brands.Remove(brand);
         await _dbContext.SaveChangesAsync(cancellationToken);

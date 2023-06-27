@@ -18,13 +18,10 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
     public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories
-            .FirstOrDefaultAsync(c => c.Id == request.CategoryId,
-                cancellationToken);
-
-        if (category == null)
-        {
-            throw new WebCatalogNotFoundException(nameof(Category), request.CategoryId);
-        }
+                           .FirstOrDefaultAsync(c => c.Id == request.CategoryId,
+                               cancellationToken)
+                       ?? throw new WebCatalogNotFoundException(nameof(Category),
+                           request.CategoryId);
 
         _dbContext.Categories.Remove(category);
         await _dbContext.SaveChangesAsync(cancellationToken);

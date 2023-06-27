@@ -19,13 +19,8 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
         CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products
-            .FirstOrDefaultAsync(p => p.Id == request.ProductId,
-                cancellationToken);
-
-        if (product == null)
-        {
-            throw new WebCatalogNotFoundException(nameof(Product), request.ProductId);
-        }
+                          .FirstOrDefaultAsync(p => p.Id == request.ProductId, cancellationToken)
+                      ?? throw new WebCatalogNotFoundException(nameof(Product), request.ProductId);
 
         _dbContext.Products.Remove(product);
         await _dbContext.SaveChangesAsync(cancellationToken);

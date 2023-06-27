@@ -4,47 +4,30 @@ using WebCatalog.Domain.Entities.ProductEntities;
 using WebCatalog.Logic.Common.Configurations;
 using WebCatalog.Logic.Common.Exceptions;
 using WebCatalog.Logic.Common.ExternalServices;
-using WebCatalog.Logic.WebCatalog.Baskets.Commands.CreateBasket;
 
 namespace WebCatalog.Logic.WebCatalog.Baskets.Commands.RemoveBasketItem;
 
 public class RemoveBasketItemCommandHandler : IRequestHandler<RemoveBasketItemCommand>
 {
     private readonly AppDbContext _dbContext;
-    private readonly IMediator _mediator;
     private readonly IUserAccessor _userAccessor;
 
     public RemoveBasketItemCommandHandler(AppDbContext dbContext,
-        IUserAccessor userAccessor,
-        IMediator mediator)
+        IUserAccessor userAccessor)
     {
         _dbContext = dbContext;
         _userAccessor = userAccessor;
-        _mediator = mediator;
     }
 
     public async Task Handle(RemoveBasketItemCommand request, CancellationToken cancellationToken)
     {
         var basket = await _dbContext.Baskets
-            .Where(b => b.UserId == _userAccessor.UserId)
-            .FirstOrDefaultAsync(cancellationToken);
+                         .Include(b => b.Items)
+                         .FirstOrDefaultAsync(b => b.UserId == _userAccessor.UserId,
+                             cancellationToken)
+                     ?? throw new WebCatalogEmptyBasketException();
 
-        if (basket == null)
-        {
-            var createBasketCommand = new CreateBasketCommand
-            {
-                UserId = _userAccessor.UserId
-            };
-
-            await _mediator.Send(createBasketCommand, cancellationToken);
-
-            throw new WebCatalogEmptyBasketException();
-        }
-
-        var basketItem = await _dbContext.BasketItems
-                             .Where(bi => bi.ProductId == request.ProductId &&
-                                          bi.BasketId == basket.Id)
-                             .FirstOrDefaultAsync(cancellationToken)
+        var basketItem = basket.Items.FirstOrDefault(bi => bi.ProductId == request.ProductId)
                          ?? throw new WebCatalogNotFoundException(nameof(Product),
                              request.ProductId);
 

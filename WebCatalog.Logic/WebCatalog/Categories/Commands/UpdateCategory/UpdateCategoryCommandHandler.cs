@@ -18,12 +18,9 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
     public async Task Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories
-            .FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
-
-        if (category == null)
-        {
-            throw new WebCatalogNotFoundException(nameof(Category), request.CategoryId);
-        }
+                           .FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken)
+                       ?? throw new WebCatalogNotFoundException(nameof(Category),
+                           request.CategoryId);
 
         category.Name = request.Name;
         category.Description = request.Description;

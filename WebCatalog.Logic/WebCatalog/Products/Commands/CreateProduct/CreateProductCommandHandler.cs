@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WebCatalog.Domain.Entities.ProductEntities;
 using WebCatalog.Logic.Common.Exceptions;
 using WebCatalog.Logic.Common.ExternalServices;
@@ -17,19 +18,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand>
     public async Task Handle(CreateProductCommand request,
         CancellationToken cancellationToken)
     {
-        var isCategoryExist = _dbContext.Categories.Any(c => c.Id == request.CategoryId);
-
-        if (!isCategoryExist)
-        {
-            throw new WebCatalogNotFoundException(nameof(Category), request.CategoryId);
-        }
-
-        var isBrandExist = _dbContext.Brands.Any(b => b.Id == request.BrandId);
-
-        if (!isBrandExist)
-        {
-            throw new WebCatalogNotFoundException(nameof(Brand), request.BrandId);
-        }
+        await CheckCategoryAndBrandExistingAndThrowAsync(request, cancellationToken);
 
         var product = new Product
         {
@@ -42,5 +31,25 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand>
 
         await _dbContext.Products.AddAsync(product, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task CheckCategoryAndBrandExistingAndThrowAsync(CreateProductCommand request,
+        CancellationToken cancellationToken)
+    {
+        var isCategoryExist =
+            await _dbContext.Categories.AnyAsync(c => c.Id == request.CategoryId, cancellationToken);
+
+        if (!isCategoryExist)
+        {
+            throw new WebCatalogNotFoundException(nameof(Category), request.CategoryId);
+        }
+
+        var isBrandExist = await _dbContext.Brands.AnyAsync(b => b.Id == request.BrandId,
+            cancellationToken: cancellationToken);
+
+        if (!isBrandExist)
+        {
+            throw new WebCatalogNotFoundException(nameof(Brand), request.BrandId);
+        }
     }
 }

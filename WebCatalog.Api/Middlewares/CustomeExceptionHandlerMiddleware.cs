@@ -1,19 +1,22 @@
 using System.Net;
 using System.Text.Json;
 using WebCatalog.Logic.Common.Exceptions;
+using WebCatalog.Logic.Common.ExternalServices;
 
 namespace WebCatalog.Api.Middlewares;
 
 public class CustomExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly bool _isDevelopment;
 
-    public CustomExceptionHandlerMiddleware(RequestDelegate next)
+    public CustomExceptionHandlerMiddleware(RequestDelegate next, IHostEnvironment environment)
     {
         _next = next;
+        _isDevelopment = environment.IsDevelopment();
     }
 
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(HttpContext context, IAppLogger<CustomExceptionHandlerMiddleware> logger)
     {
         try
         {
@@ -21,11 +24,14 @@ public class CustomExceptionHandlerMiddleware
         }
         catch (Exception exception)
         {
-            await HandleExceptionAsync(context, exception);
+            await HandleExceptionAsync(context, exception, logger);
         }
     }
 
-    private Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private Task HandleExceptionAsync(
+        HttpContext context,
+        Exception exception, 
+        IAppLogger<CustomExceptionHandlerMiddleware> logger)
     {
         var code = HttpStatusCode.InternalServerError;
         var result = string.Empty;
@@ -47,14 +53,17 @@ public class CustomExceptionHandlerMiddleware
                 code = HttpStatusCode.NotFound;
                 result = emptyBasketException.Message;
                 break;
+            default:
+                logger.LogError($"Unhandled exception: {exception.Message}");
+                break;
         }
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int) code;
 
-        if (result == string.Empty)
+        if (_isDevelopment)
         {
-            result = JsonSerializer.Serialize(new {errpr = exception.Message});
+            result = JsonSerializer.Serialize(new {error = $"{exception}"});
         }
 
         return context.Response.WriteAsync(result);

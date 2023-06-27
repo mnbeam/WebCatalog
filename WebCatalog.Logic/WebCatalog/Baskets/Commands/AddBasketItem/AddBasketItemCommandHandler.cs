@@ -25,34 +25,17 @@ public class AddBasketItemCommandHandler : IRequestHandler<AddBasketItemCommand>
     public async Task Handle(AddBasketItemCommand request, CancellationToken cancellationToken)
     {
         var basket = await _dbContext.Baskets
-            .Where(b => b.UserId == _userAccessor.UserId)
-            .FirstOrDefaultAsync(cancellationToken);
+                         .Where(b => b.UserId == _userAccessor.UserId)
+                         .Include(b => b.Items)
+                         .FirstOrDefaultAsync(cancellationToken)
+                     ?? await CreateBasketAsync(cancellationToken);
 
-        if (basket == null)
-        {
-            var createBasketCommand = new CreateBasketCommand
-            {
-                UserId = _userAccessor.UserId
-            };
-
-            basket = await _mediator.Send(createBasketCommand, cancellationToken);
-        }
-
-        var basketItem = await _dbContext.BasketItems
-            .Where(bi => bi.ProductId == request.ProductId &&
-                         bi.BasketId == basket.Id)
-            .FirstOrDefaultAsync(cancellationToken);
+        var basketItem = basket.Items
+            .FirstOrDefault(bi => bi.ProductId == request.ProductId);
 
         if (basketItem == null)
         {
-            var newBasketItem = new BasketItem
-            {
-                BasketId = basket.Id,
-                ProductId = request.ProductId,
-                Quantity = request.Quantity
-            };
-
-            await _dbContext.AddAsync(newBasketItem, cancellationToken);
+            await CreateBasketItemAsync(request, cancellationToken, basket);
         }
         else
         {
@@ -60,5 +43,28 @@ public class AddBasketItemCommandHandler : IRequestHandler<AddBasketItemCommand>
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task CreateBasketItemAsync(AddBasketItemCommand request,
+        CancellationToken cancellationToken, Basket basket)
+    {
+        var newBasketItem = new BasketItem
+        {
+            BasketId = basket.Id,
+            ProductId = request.ProductId,
+            Quantity = request.Quantity
+        };
+
+        await _dbContext.BasketItems.AddAsync(newBasketItem, cancellationToken);
+    }
+
+    private async Task<Basket> CreateBasketAsync(CancellationToken cancellationToken)
+    {
+        var createBasketCommand = new CreateBasketCommand
+        {
+            UserId = _userAccessor.UserId
+        };
+
+        return await _mediator.Send(createBasketCommand, cancellationToken);
     }
 }

@@ -18,13 +18,8 @@ public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand>
     public async Task Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
     {
         var brand = await _dbContext.Brands
-            .Where(b => b.Id == request.BrandId)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (brand == null)
-        {
-            throw new WebCatalogNotFoundException(nameof(Brand), request.BrandId);
-        }
+                        .FirstOrDefaultAsync(b => b.Id == request.BrandId, cancellationToken)
+                    ?? throw new WebCatalogNotFoundException(nameof(Brand), request.BrandId);
 
         var isBrandDublicate = await _dbContext.Brands
             .Where(b => b.Name == request.Name)

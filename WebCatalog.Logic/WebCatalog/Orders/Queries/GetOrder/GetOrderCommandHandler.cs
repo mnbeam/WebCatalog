@@ -26,15 +26,10 @@ public class GetOrderCommandHandler : IRequestHandler<GetOrderCommand, OrderVm>
     public async Task<OrderVm> Handle(GetOrderCommand request, CancellationToken cancellationToken)
     {
         var order = await _dbContext.Orders
-            .Where(o => o.UserId == _userAccessor.UserId &&
-                        o.Id == request.OrderId)
-            .Include(o => o.OrderItems)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (order == null)
-        {
-            throw new WebCatalogNotFoundException(nameof(Order), request.OrderId);
-        }
+                        .Include(o => o.OrderItems)
+                        .FirstOrDefaultAsync(o => o.UserId == _userAccessor.UserId &&
+                                                  o.Id == request.OrderId, cancellationToken)
+                    ?? throw new WebCatalogNotFoundException(nameof(Order), request.OrderId);
 
         return _mapper.Map<OrderVm>(order);
     }

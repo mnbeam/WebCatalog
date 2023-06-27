@@ -35,12 +35,7 @@ public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessToken
             new(JwtRegisteredClaimNames.Email, request.AppUser.Email!)
         };
 
-        var roles = await _userManager.GetRolesAsync(request.AppUser);
-
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
+        await AddRolesToClaimsAsync(request, claims);
 
         var token = new JwtSecurityToken(
             _authOptions.Issuer,
@@ -52,5 +47,15 @@ public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessToken
                 SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private async Task AddRolesToClaimsAsync(CreateAccessTokenCommand request, List<Claim> claims)
+    {
+        var roles = await _userManager.GetRolesAsync(request.AppUser);
+
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
     }
 }

@@ -13,7 +13,7 @@ public class OrderVm : IMapWith<Order>
     public DateTimeOffset OrderDate { get; set; }
 
     public List<OrderItem> OrderItems { get; set; }
-    
+
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Order, OrderVm>()

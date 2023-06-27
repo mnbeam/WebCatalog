@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WebCatalog.Domain.Entities.ProductEntities;
 using WebCatalog.Logic.Common.Exceptions;
 using WebCatalog.Logic.Common.ExternalServices;
@@ -16,20 +17,23 @@ public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand>
 
     public async Task Handle(CreateBrandCommand request, CancellationToken cancellationToken)
     {
+        await CheckDublicateAndThrow(request);
+
         var brand = new Brand
         {
             Name = request.Name
         };
 
-        var isBrandDublicate = _dbContext.Brands.Any(b => b.Name == request.Name);
+        await _dbContext.Brands.AddAsync(brand, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
 
-        if (isBrandDublicate)
+    private async Task CheckDublicateAndThrow(CreateBrandCommand request)
+    {
+        if (await _dbContext.Brands.AnyAsync(b => b.Name == request.Name))
         {
             throw new WebCatalogDublicateException(nameof(Brand), nameof(request.Name),
                 request.Name);
         }
-
-        await _dbContext.Brands.AddAsync(brand, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

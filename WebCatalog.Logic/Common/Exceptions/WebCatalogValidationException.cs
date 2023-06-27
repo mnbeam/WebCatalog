@@ -17,7 +17,7 @@ public class WebCatalogValidationException : Exception
             .GroupBy(f => f.PropertyName, f => f.ErrorMessage)
             .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
     }
-    
+
     public WebCatalogValidationException(params string[]? errors) : this()
     {
         if (errors != null)

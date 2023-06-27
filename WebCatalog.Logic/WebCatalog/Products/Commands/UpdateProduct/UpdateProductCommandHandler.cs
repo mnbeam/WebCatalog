@@ -19,13 +19,8 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
         CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products
-            .FirstOrDefaultAsync(p => p.Id == request.ProductId,
-                cancellationToken);
-
-        if (product == null)
-        {
-            throw new WebCatalogNotFoundException(nameof(Product), request.ProductId);
-        }
+                          .FirstOrDefaultAsync(p => p.Id == request.ProductId, cancellationToken) 
+                      ?? throw new WebCatalogNotFoundException(nameof(Product), request.ProductId);
 
         product.CategoryId = request.CategoryId;
         product.BrandId = request.BrandId;

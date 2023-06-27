@@ -19,7 +19,7 @@ public class ApplicationDbContextSeed
     {
         try
         {
-            if (dbContext.Database.IsSqlServer())
+            if (dbContext.Database.IsNpgsql())
             {
                 dbContext.Database.Migrate();
             }
