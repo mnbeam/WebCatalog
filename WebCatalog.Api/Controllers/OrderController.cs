@@ -20,7 +20,7 @@ public class OrderController : BaseController
     }
 
     [Authorize]
-    [HttpGet("{orderId}")]
+    [HttpGet($"{{{nameof(orderId)}}}")]
     public async Task<IActionResult> GetOrder(int orderId)
     {
         var getOrderCommand = new GetOrderCommand

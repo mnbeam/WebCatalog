@@ -73,7 +73,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
     private async Task<List<Product>> GetActualCatalogProducts(Basket basket,
         CancellationToken cancellationToken)
     {
-        var basketItemsIds = basket.Items!
+        var basketItemsIds = basket.Items
             .Select(basketItem => basketItem.ProductId)
             .ToArray();
 

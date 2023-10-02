@@ -28,7 +28,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, i
             UserId = _userAccessor.UserId,
             Rating = request.Rating,
             Content = request.Content,
-            CreatedTime = _dateTimeService.Now
+            CreatedAt = _dateTimeService.Now
         };
 
         await _dbContext.Reviews.AddAsync(review, cancellationToken);

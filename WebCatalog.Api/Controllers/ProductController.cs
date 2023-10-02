@@ -22,7 +22,7 @@ public class ProductController : BaseController
         return Ok(vm);
     }
 
-    [HttpGet("{productId}")]
+    [HttpGet($"{{{nameof(productId)}}}")]
     public async Task<IActionResult> GetProduct(int productId)
     {
         var getProductQuery = new GetProductQuery
@@ -35,7 +35,7 @@ public class ProductController : BaseController
         return Ok(vm);
     }
 
-    [HttpGet("bycategoryId/{categoryId}")]
+    [HttpGet($"bycategoryId/{{{nameof(categoryId)}}}")]
     public async Task<IActionResult> GetProductListByCategory([FromRoute] int categoryId)
     {
         var getProductListByCategoryQuery = new GetProductListByCategoryQuery
@@ -48,7 +48,7 @@ public class ProductController : BaseController
         return Ok(vm);
     }
 
-    [HttpGet("bybrandId/{brandId}")]
+    [HttpGet($"bybrandId/{{{nameof(brandId)}}}")]
     public async Task<IActionResult> GetProductListByBrand([FromRoute] int brandId)
     {
         var getProductListByBrandQuery = new GetProductListByBrandQuery

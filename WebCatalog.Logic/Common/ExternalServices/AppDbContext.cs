@@ -13,7 +13,7 @@ namespace WebCatalog.Logic.Common.ExternalServices;
 /// </summary>
 public abstract class AppDbContext : IdentityDbContext<AppUser, IdentityRole<int>, int>
 {
-    public AppDbContext(DbContextOptions options) : base(options)
+    protected AppDbContext(DbContextOptions options) : base(options)
     {
     }
 

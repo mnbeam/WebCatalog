@@ -28,7 +28,11 @@ public static class DependencyInjection
 
         if (configuration["UseInMemoryDatabase"] != null)
         {
-            useInMemoryDatabase = bool.Parse(configuration["UseInMemoryDatabase"]);
+            var shouldUseInMemoryDatabase = bool.TryParse(configuration["UseInMemoryDatabase"],
+                out useInMemoryDatabase);
+
+            if (!shouldUseInMemoryDatabase)
+                throw new ArgumentException("Can not parse UseInMemoryDatabase flag.");
         }
 
         if (useInMemoryDatabase)

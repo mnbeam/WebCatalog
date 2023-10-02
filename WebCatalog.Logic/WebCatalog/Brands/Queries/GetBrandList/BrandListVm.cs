@@ -2,5 +2,5 @@
 
 public class BrandListVm
 {
-    public List<BrandVm> Brands { get; set; }
+    public List<BrandVm> Brands { get; set; } = new();
 }

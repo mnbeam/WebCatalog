@@ -4,6 +4,7 @@ using WebCatalog.Api.UserAccessor;
 using WebCatalog.Infrastructure;
 using WebCatalog.Logic;
 using WebCatalog.Logic.Common.Configurations;
+using WebCatalog.Logic.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

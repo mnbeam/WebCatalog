@@ -25,7 +25,7 @@ public static class FluentValidationExtension
         where T : class
     {
         return ruleBuilder
-            .Must(rating => rating >= 1 && rating <= 5)
+            .Must(rating => rating is >= 1 and <= 5)
             .WithMessage("Rating must be between 1 and 5");
     }
 }

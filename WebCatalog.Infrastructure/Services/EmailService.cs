@@ -25,25 +25,21 @@ public class EmailService : IEmailService
     /// <inheritdoc />
     public async Task SendAsync(EmailMessageDto messageDto)
     {
+        var client = GetSmtpClientAsync();
+        var message = GetMessage(messageDto);
+        
+        await SendMessageAsync(client, message);
+    }
+
+    private async Task SendMessageAsync(SmtpClient client, MailMessage message)
+    {
         try
         {
-            using var client = CreateSmtpClientAsync();
-            var message = GetMessage(messageDto);
-
-            try
-            {
-                throw new SmtpException();
-                await client.SendMailAsync(message);
-            }
-            catch (SmtpException e)
-            {
-                _logger.LogError($"Error while sending email: {e.Message}");
-                throw;
-            }
+            await client.SendMailAsync(message);
         }
-        catch (Exception e)
+        catch (SmtpException e)
         {
-            _logger.LogError($"Error smtp-client: {e.Message}");
+            _logger.LogError($"Error while sending email: {e.Message}");
             throw;
         }
     }
@@ -74,23 +70,31 @@ public class EmailService : IEmailService
         return message;
     }
 
-    private SmtpClient CreateSmtpClientAsync()
+    private SmtpClient GetSmtpClientAsync()
     {
-        var credentials = new NetworkCredential(_emailConfiguration.Login,
-            _emailConfiguration.Password);
-        var cache = new CredentialCache
+        try
         {
-            { _emailConfiguration.Host, _emailConfiguration.Port, "Login", credentials }
-        };
+            var credentials = new NetworkCredential(_emailConfiguration.Login,
+                _emailConfiguration.Password);
+            var cache = new CredentialCache
+            {
+                { _emailConfiguration.Host, _emailConfiguration.Port, "Login", credentials }
+            };
 
-        return new SmtpClient()
+            return new SmtpClient()
+            {
+                Host = _emailConfiguration.Host,
+                Port = _emailConfiguration.Port,
+                EnableSsl = _emailConfiguration.EnableSsl,
+                UseDefaultCredentials = false,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = cache,
+            };
+        }
+        catch (Exception e)
         {
-            Host = _emailConfiguration.Host,
-            Port = _emailConfiguration.Port,
-            EnableSsl = _emailConfiguration.EnableSsl,
-            UseDefaultCredentials = false,
-            DeliveryMethod = SmtpDeliveryMethod.Network,
-            Credentials = cache,
-        };
+            _logger.LogError($"Error smtp-client: {e.Message}");
+            throw;
+        }
     }
 }

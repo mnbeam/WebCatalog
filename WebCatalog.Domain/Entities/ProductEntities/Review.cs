@@ -12,7 +12,7 @@ public class Review : BaseAuditableEntity
 
     public int Rating { get; set; }
 
-    public DateTime CreatedTime { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public DateTime? EditedTime { get; set; }
+    public DateTime? EditedAt { get; set; }
 }

@@ -34,7 +34,7 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
 
         review.Content = request.Content;
         review.Rating = request.Rating;
-        review.EditedTime = _dateTimeService.Now;
+        review.EditedAt = _dateTimeService.Now;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

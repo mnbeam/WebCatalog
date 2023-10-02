@@ -5,6 +5,9 @@ using WebCatalog.Logic.Common.ExternalServices;
 
 namespace WebCatalog.Api.Middlewares;
 
+/// <summary>
+/// Middleware для обработки ошибок.
+/// </summary>
 public class CustomExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
@@ -28,6 +31,13 @@ public class CustomExceptionHandlerMiddleware
         }
     }
 
+    /// <summary>
+    /// Обработать ошибку.
+    /// </summary>
+    /// <param name="context">Контекст Http запроса.</param>
+    /// <param name="exception">Ошибка.</param>
+    /// <param name="logger">Логгер.</param>
+    /// <returns>Обработанная ошибка.</returns>
     private Task HandleExceptionAsync(
         HttpContext context,
         Exception exception, 

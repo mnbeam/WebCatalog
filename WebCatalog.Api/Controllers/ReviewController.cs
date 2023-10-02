@@ -10,7 +10,7 @@ namespace WebCatalog.Api.Controllers;
 
 public class ReviewController : BaseController
 {
-    [HttpGet("byproductId/{productId}")]
+    [HttpGet($"byproductId/{{{nameof(productId)}}}")]
     public async Task<IActionResult> GetReviewListByProductId(int productId)
     {
         var getReviewListByProductIdCommand = new GetReviewListByProductIdQuery
@@ -23,7 +23,7 @@ public class ReviewController : BaseController
         return Ok(reviews);
     }
 
-    [HttpGet("byuserId/{userId}")]
+    [HttpGet($"byuserId/{{{nameof(userId)}}}")]
     public async Task<IActionResult> GetReviewListByUserId(int userId)
     {
         var getReviewListByUserIdCommand = new GetReviewListByUserIdQuery

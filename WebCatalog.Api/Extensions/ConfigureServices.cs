@@ -4,17 +4,29 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebCatalog.Domain.Enums;
 using WebCatalog.Logic.Common.Configurations;
+using WebCatalog.Logic.Common.Exceptions;
 using WebCatalog.Logic.Common.Extensions;
 
 namespace WebCatalog.Api.Extensions;
 
+/// <summary>
+/// Методы расширения для API системы.
+/// </summary>
 public static class ConfigureServices
 {
+    /// <summary>
+    /// Добавить аутентификацию и авторизацию.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов.</param>
+    /// <param name="configuration">Конфигурация.</param>
+    /// <returns>Коллекция сервисов.</returns>
     public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
         var authOptions = configuration
-            .GetSection(nameof(AuthOptions))
-            .Get<AuthOptions>();
+                              .GetSection(nameof(AuthOptions))
+                              .Get<AuthOptions>()
+                          ?? throw new ArgumentException(
+                              $"Configuration {nameof(AuthOptions)} not found.");
 
         services.AddAuthentication(options =>
             {
@@ -54,6 +66,11 @@ public static class ConfigureServices
         return services;
     }
     
+    /// <summary>
+    /// Добавить Swagger.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов.</param>
+    /// <returns>Коллекция сервисов.</returns>
     public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(opts =>

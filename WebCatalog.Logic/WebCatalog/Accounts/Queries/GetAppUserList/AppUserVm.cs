@@ -7,7 +7,7 @@ public class AppUserVm : IMapWith<AppUser>
 {
     public int Id { get; set; }
 
-    public string? UserName { get; set; }
+    public string UserName { get; set; } = default!;
 
     public string? Email { get; set; }
 }

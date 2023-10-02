@@ -10,7 +10,7 @@ public class UpdateProductCommand : IRequest
 
     public int BrandId { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
 
     public string? Description { get; set; }
 

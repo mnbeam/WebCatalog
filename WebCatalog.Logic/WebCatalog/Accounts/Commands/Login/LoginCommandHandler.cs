@@ -36,9 +36,15 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginVm>
     {
         if (request.HaveRefreshToken)
         {
+            if (request.RefreshToken == null)
+                throw new WebCatalogValidationException("Refresh token is not exist.");
+            
             return await LoginByRefreshTokenAsync(request.RefreshToken);
         }
 
+        if (request.UserName == null || request.Password == null)
+            throw new WebCatalogValidationException("UserName or Password can not be null.");
+        
         return await LoginByPasswordAsync(request.UserName, request.Password);
     }
 

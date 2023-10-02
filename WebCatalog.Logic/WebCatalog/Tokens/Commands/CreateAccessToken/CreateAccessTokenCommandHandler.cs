@@ -53,9 +53,6 @@ public class CreateAccessTokenCommandHandler : IRequestHandler<CreateAccessToken
     {
         var roles = await _userManager.GetRolesAsync(request.AppUser);
 
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
     }
 }

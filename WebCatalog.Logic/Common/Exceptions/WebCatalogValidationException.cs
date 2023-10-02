@@ -4,7 +4,7 @@ namespace WebCatalog.Logic.Common.Exceptions;
 
 public class WebCatalogValidationException : Exception
 {
-    public WebCatalogValidationException()
+    private WebCatalogValidationException()
         : base("One or more validation failures have occured")
     {
         Errors = new Dictionary<string, string[]>();

@@ -11,7 +11,7 @@ public class ProductVm : IMapWith<Product>
 
     public int BrandId { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
 
     public string? Description { get; set; }
 

@@ -2,5 +2,5 @@
 
 public class AppUserListVm
 {
-    public List<AppUserVm>? AppUsers { get; set; }
+    public List<AppUserVm> AppUsers { get; set; } = new();
 }

@@ -5,10 +5,9 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebCatalog.Logic.Common.Behaviors;
-using WebCatalog.Logic.Common.Extensions;
 using WebCatalog.Logic.Common.Mappings;
 
-namespace WebCatalog.Logic;
+namespace WebCatalog.Logic.Common.Extensions;
 
 public static class ConfigureServices
 {

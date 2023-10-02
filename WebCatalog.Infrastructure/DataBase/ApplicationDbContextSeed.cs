@@ -9,8 +9,19 @@ using WebCatalog.Logic.Common.ExternalServices;
 
 namespace WebCatalog.Infrastructure.DataBase;
 
+/// <summary>
+/// Контекст для добавления сущностей в БД.
+/// </summary>
 public class ApplicationDbContextSeed
 {
+    /// <summary>
+    /// Добавить сущности.
+    /// </summary>
+    /// <param name="dbContext">Контекст БД.</param>
+    /// <param name="userManager">Сервис для работы с пользователями.</param>
+    /// <param name="roleManager">Сервис для работы с ролями.</param>
+    /// <param name="logger">Логгер.</param>
+    /// <param name="retryForAvailable">Количество повторных добавлений, в случае неуспеха.</param>
     public static async Task SeedAsync(AppDbContext dbContext,
         UserManager<AppUser> userManager,
         RoleManager<IdentityRole<int>> roleManager,
@@ -21,7 +32,7 @@ public class ApplicationDbContextSeed
         {
             if (dbContext.Database.IsNpgsql())
             {
-                dbContext.Database.Migrate();
+                await dbContext.Database.MigrateAsync();
             }
 
             if (!await dbContext.Brands.AnyAsync())
@@ -63,6 +74,11 @@ public class ApplicationDbContextSeed
         }
     }
 
+    /// <summary>
+    /// Добавить пользователей.
+    /// </summary>
+    /// <param name="userManager">Сервис для работы с пользователями.</param>
+    /// <param name="roleManager">Сервис для работы с ролями.</param>
     private static async Task SeedUsersAsync(UserManager<AppUser> userManager,
         RoleManager<IdentityRole<int>> roleManager)
     {
@@ -102,7 +118,7 @@ public class ApplicationDbContextSeed
         var sellerUser = await userManager.FindByNameAsync("seller");
         await userManager.AddToRoleAsync(sellerUser, Role.Seller.GetEnumDescription());
     }
-
+    
     private static IEnumerable<Brand> GetInitialBrands()
     {
         return new List<Brand>

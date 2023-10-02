@@ -6,8 +6,7 @@ using WebCatalog.Logic.Common.ExternalServices;
 
 namespace WebCatalog.Logic.WebCatalog.Accounts.Queries.GetAppUserList;
 
-public class
-    GetAppUserListQueryHandler : IRequestHandler<GetAppUserListQuery, AppUserListVm>
+public class GetAppUserListQueryHandler : IRequestHandler<GetAppUserListQuery, AppUserListVm>
 {
     private readonly AppDbContext _dbContext;
     private readonly IMapper _mapper;

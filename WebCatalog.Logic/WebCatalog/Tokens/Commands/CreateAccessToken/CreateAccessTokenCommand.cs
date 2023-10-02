@@ -5,5 +5,5 @@ namespace WebCatalog.Logic.WebCatalog.Tokens.Commands.CreateAccessToken;
 
 public class CreateAccessTokenCommand : IRequest<string>
 {
-    public AppUser AppUser { get; set; }
+    public AppUser AppUser { get; set; } = default!;
 }

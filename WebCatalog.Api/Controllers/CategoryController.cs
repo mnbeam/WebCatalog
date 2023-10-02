@@ -10,7 +10,7 @@ namespace WebCatalog.Api.Controllers;
 
 public class CategoryController : BaseController
 {
-    [HttpGet("{id}")]
+    [HttpGet($"{{{nameof(id)}}}")]
     public async Task<IActionResult> GetCategory(int id)
     {
         var getCategoryQuery = new GetCategoryQuery
